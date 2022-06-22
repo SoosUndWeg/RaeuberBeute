@@ -1,5 +1,11 @@
-.vs/
-Debug/
-RaeuberBeute_/Debug/
+.vs/**
+Debug/**
+x64/**
+
 CppProperties.json
-*.json
+.DS_Store
+
+RaeuberBeute_/Debug/**
+RaeuberBeute_/x64/**
+
+
