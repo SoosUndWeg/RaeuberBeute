@@ -145,7 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main\main.cpp" />
     <ClCompile Include="main\Test.cpp" />
   </ItemGroup>
   <ItemGroup>

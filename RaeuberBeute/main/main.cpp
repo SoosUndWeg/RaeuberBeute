@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Log.h"
+#include "../Log.h"
 
 int main() {
 	//std::cout << "Hello World" << std::endl;
