@@ -5,8 +5,8 @@ x64/**
 CppProperties.json
 .DS_Store
 
-RaeuberBeute_/Debug/**
-RaeuberBeute_/x64/**
-RaeuberBeute_/Log.h.gch
+RaeuberBeute/Debug/**
+RaeuberBeute/x64/**
+RaeuberBeute/Log.h.gch
 
 
