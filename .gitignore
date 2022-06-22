@@ -7,5 +7,6 @@ CppProperties.json
 
 RaeuberBeute_/Debug/**
 RaeuberBeute_/x64/**
+RaeuberBeute_/Log.h.gch
 
 
