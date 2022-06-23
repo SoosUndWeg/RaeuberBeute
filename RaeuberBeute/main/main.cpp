@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../Log.h"
 #include <cmath>
+#include "../Simulation/Creatures/Animal.h"
 
 double f(double t, double x) {                                        // Definition der Funktion f(t,x) 
     int i = 1;
@@ -16,7 +17,7 @@ double f(double t, double x) {                                        // Definit
     return (r[i] + summe) * x;                                        // Rueckgabewert der Funktion f(t,x)
 }
 
-int main() {
+void lina() {
     const int N = 2;
     double t_intervall[2] = { 0, 2 };                                   // Zeit-Intervall [a,b] in dem die Loesung berechnet werden soll
     double h = (t_intervall[0] - t_intervall[1]) / N;                   // Abstand dt zwischen den aequidistanten Punkten des t-Intervalls (h=dt)                                       
@@ -35,4 +36,10 @@ int main() {
         k4 = h * f(t + h, x_RungeK_4 + k3);                           // Runge-Kutta Parameter 4
         x_RungeK_4 = x_RungeK_4 + (k1 + 2 * k2 + 2 * k3 + k4) / 6;    // Runge-Kutta Ordnung vier Methode
     }
+}
+
+int main() {
+    //lina();
+
+    sim::Animal Ente(sim::predator);
 }

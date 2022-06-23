@@ -146,11 +146,15 @@
   <ItemGroup>
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main\main.cpp" />
-    <ClCompile Include="main\Test.cpp" />
+    <ClCompile Include="Simulation\Controller.cpp" />
+    <ClCompile Include="Simulation\Creatures\Animal.cpp" />
+    <ClCompile Include="Simulation\Creatures\Plant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h" />
-    <ClInclude Include="main\Test.h" />
+    <ClInclude Include="Simulation\Controller.h" />
+    <ClInclude Include="Simulation\Creatures\Animal.h" />
+    <ClInclude Include="Simulation\Creatures\Plant.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

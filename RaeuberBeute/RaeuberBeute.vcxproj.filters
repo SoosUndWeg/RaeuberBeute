@@ -18,18 +18,30 @@
     <ClCompile Include="main\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="main\Test.cpp">
+    <ClCompile Include="Log.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
+    <ClCompile Include="Simulation\Controller.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Creatures\Animal.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Creatures\Plant.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main\Test.h">
+    <ClInclude Include="Log.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
+    <ClInclude Include="Simulation\Controller.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Creatures\Animal.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Creatures\Plant.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
