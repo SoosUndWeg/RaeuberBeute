@@ -2,6 +2,7 @@
 #include "../Log.h"
 #include <cmath>
 #include "../Simulation/Map.h"
+#include "../Simulation/Controller.h"
 
 double f(double t, double x) {                                        // Definition der Funktion f(t,x) 
     int i = 1;
@@ -38,9 +39,7 @@ void lina() {
     }
 }
 
-int main() {
-    //lina();
-
+void kilian() {
     sim::Entity* Ente = new sim::Entity(sim::predator);
     sim::Map map(10);
 
@@ -50,4 +49,13 @@ int main() {
 
     std::cout << map.getEntity(2, 2)->getAge() << std::endl;
     map.print();
+}
+
+int main() {
+    //lina();
+
+    kilian();
+
+    std::cout << "\nAlle Prozesse beendet!" << std::endl;
+    return 0;
 }
