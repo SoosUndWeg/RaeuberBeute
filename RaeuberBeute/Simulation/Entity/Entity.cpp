@@ -1,12 +1,15 @@
 //Klasse zum erstellen von Tieren für die Simulation
-#include "Animal.h"
+#include "Entity.h"
 
 namespace sim {
 	//Konstruktor
-	Animal::Animal(const Animal& _Animal) {
-		role = { _Animal.role };
+	Entity::Entity() :role{ null }, xPos{ -1 }, yPos{ -1 }{}
+	Entity::Entity(const Entity& _Entity) {
+		role = { _Entity.role };
+		xPos = { _Entity.xPos };
+		yPos = { _Entity.yPos };
 	}
-	Animal::Animal(Role _role) : role{ _role } {}
+	Entity::Entity(Role _role) : role{ _role } {}
 	
 
 	

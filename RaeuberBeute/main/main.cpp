@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../Log.h"
 #include <cmath>
-#include "../Simulation/Entity/Animal.h"
+#include "../Simulation/Map.h"
 
 double f(double t, double x) {                                        // Definition der Funktion f(t,x) 
     int i = 1;
@@ -41,5 +41,11 @@ void lina() {
 int main() {
     //lina();
 
-    sim::Animal Ente(sim::predator);
+    sim::Entity Ente(sim::predator);
+    sim::Map map(5);
+
+    map.addEntity(Ente, 2, 2);
+    map.getEntity(2, 2).setXPos(3);
+
+    std::cout << map.getEntity(2, 2).getXPos() << " " << Ente.getYPos() << std::endl;
 }
