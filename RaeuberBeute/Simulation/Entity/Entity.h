@@ -2,7 +2,7 @@
 
 namespace sim {
 
-	enum Role { predator, prey, null };
+	enum Role { predator, prey, plant, null };
 
 	class Entity {
 	public:
@@ -11,13 +11,18 @@ namespace sim {
 		Entity(const Entity&);
 		Entity(Role);
 
-		Role getRole() const { return role; }
-		int getAge() const { return age; }
-		int getXPos() const { return xPos; }
-		int getYPos() const { return yPos; }
+		//get
+		Role getRole() const;
+		int getAge() const;
+		int getXPos() const;
+		int getYPos() const;
 
-		void setXPos(int _xPos) { xPos = { _xPos }; }
-		void setYPos(int _yPos) { yPos = { _yPos }; }
+		//set
+		void setPos(int, int);
+		void setXPos(int _xPos);
+		void setYPos(int _yPos);
+		
+		void setAge(int _age);
 
 	private:
 		Role role;

@@ -11,6 +11,25 @@ namespace sim {
 	}
 	Entity::Entity(Role _role) : role{ _role } {}
 	
+	//get
+	Role Entity::getRole() const { return role; }
+	int Entity::getAge() const { return age; }
+	int Entity::getXPos() const { return xPos; }
+	int Entity::getYPos() const { return yPos; }
 
-	
+	//set
+	void Entity::setPos(int _xPos, int _yPos) {
+		xPos = _xPos;
+		yPos = _yPos;
+	}
+	void Entity::setXPos(int _xPos) {
+		xPos = _xPos; 
+	}
+	void Entity::setYPos(int _yPos) {
+		yPos = _yPos; 
+	}
+
+	void Entity::setAge(int _age) {
+		age = _age;
+	}
 }

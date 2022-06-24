@@ -41,11 +41,10 @@ void lina() {
 int main() {
     //lina();
 
-    sim::Entity Ente(sim::predator);
+    sim::Entity* Ente = new sim::Entity(sim::predator);
     sim::Map map(5);
 
-    map.addEntity(Ente, 2, 2);
-    map.getEntity(2, 2).setXPos(3);
+    Ente->setAge(12);
 
-    std::cout << map.getEntity(2, 2).getXPos() << " " << Ente.getYPos() << std::endl;
+    map.addEntity(Ente, 2, 2);
 }
