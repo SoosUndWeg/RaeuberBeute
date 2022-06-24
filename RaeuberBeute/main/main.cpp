@@ -42,9 +42,12 @@ int main() {
     //lina();
 
     sim::Entity* Ente = new sim::Entity(sim::predator);
-    sim::Map map(5);
+    sim::Map map(10);
 
     Ente->setAge(12);
 
     map.addEntity(Ente, 2, 2);
+
+    std::cout << map.getEntity(2, 2)->getAge() << std::endl;
+    map.print();
 }

@@ -21,7 +21,11 @@ namespace sim {
 		void setYPos(int, int, int);
 
 		//sonstiges
+		void print();
 		void addEntity(Entity*, int, int);
+		void fill();
+		void updateAll();
+		void updateEntity(int, int);
 		void deleteEntity(int, int);
 	private:
 		std::vector<std::vector<Entity*>> map;
