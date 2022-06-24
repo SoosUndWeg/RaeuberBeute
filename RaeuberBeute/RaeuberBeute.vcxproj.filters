@@ -24,10 +24,10 @@
     <ClCompile Include="Simulation\Controller.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\Creatures\Animal.cpp">
+    <ClCompile Include="Simulation\Entity\Entity.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\Creatures\Plant.cpp">
+    <ClCompile Include="Simulation\Map.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,10 +38,10 @@
     <ClInclude Include="Simulation\Controller.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation\Creatures\Animal.h">
+    <ClInclude Include="Simulation\Entity\Entity.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation\Creatures\Plant.h">
+    <ClInclude Include="Simulation\Map.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

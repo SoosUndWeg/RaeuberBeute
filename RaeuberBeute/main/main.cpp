@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../Log.h"
 #include <cmath>
-#include "../Simulation/Creatures/Animal.h"
+#include "../Simulation/Entity/Animal.h"
 
 double f(double t, double x) {                                        // Definition der Funktion f(t,x) 
     int i = 1;

@@ -147,14 +147,14 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main\main.cpp" />
     <ClCompile Include="Simulation\Controller.cpp" />
-    <ClCompile Include="Simulation\Creatures\Animal.cpp" />
-    <ClCompile Include="Simulation\Creatures\Plant.cpp" />
+    <ClCompile Include="Simulation\Entity\Entity.cpp" />
+    <ClCompile Include="Simulation\Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h" />
     <ClInclude Include="Simulation\Controller.h" />
-    <ClInclude Include="Simulation\Creatures\Animal.h" />
-    <ClInclude Include="Simulation\Creatures\Plant.h" />
+    <ClInclude Include="Simulation\Entity\Entity.h" />
+    <ClInclude Include="Simulation\Map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

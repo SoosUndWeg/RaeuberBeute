@@ -3,13 +3,11 @@
 
 namespace sim {
 	//Konstruktor
-	Animal::Animal() {}
+	Animal::Animal(const Animal& _Animal) {
+		role = { _Animal.role };
+	}
 	Animal::Animal(Role _role) : role{ _role } {}
 	
 
-	//Vererbte Klasse Predator von Animal
-	//Predator::Predator(Role _role) : role{ _role } {}
-	
-	//Vererbte Klasse Prey von Animal
 	
 }
