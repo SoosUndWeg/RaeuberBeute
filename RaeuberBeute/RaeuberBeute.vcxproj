@@ -148,13 +148,17 @@
     <ClCompile Include="main\main.cpp" />
     <ClCompile Include="Simulation\Controller.cpp" />
     <ClCompile Include="Simulation\Entity\Entity.cpp" />
+    <ClCompile Include="Simulation\Entity\Properties.cpp" />
     <ClCompile Include="Simulation\Map.cpp" />
+    <ClCompile Include="Simulation\Tools\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h" />
     <ClInclude Include="Simulation\Controller.h" />
     <ClInclude Include="Simulation\Entity\Entity.h" />
+    <ClInclude Include="Simulation\Entity\Properties.h" />
     <ClInclude Include="Simulation\Map.h" />
+    <ClInclude Include="Simulation\Tools\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

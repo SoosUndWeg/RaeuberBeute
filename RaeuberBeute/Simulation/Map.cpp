@@ -4,12 +4,12 @@
 
 namespace sim {
 	//Konstruktor
-	Map::Map(int _Size) : xSize{ _Size }, ySize{ _Size }{
+	Map::Map(int Size) : xSize{ Size }, ySize{ Size }{
 		map.resize(xSize, std::vector<Entity*>(ySize, nullptr));
 		fill();
 		updateAll();
 	}
-	Map::Map(int _xSize, int _ySize) : xSize{ _xSize }, ySize{ _ySize }{
+	Map::Map(int xSize, int ySize) : xSize{ xSize }, ySize{ ySize }{
 		map.resize(xSize, std::vector<Entity*>(ySize, nullptr));
 		fill();
 		updateAll();
@@ -35,33 +35,21 @@ namespace sim {
 
 	//set
 	void Map::setPos(int _xPos, int _yPos, int _newXPos, int _newYPos) {
-		nullEntity = new Entity();
-
-		deleteEntity(_newXPos, _newYPos);
-
-		map[_newXPos][_newYPos] = std::move(map[_xPos][_yPos]);
-		map[_xPos][_yPos] = nullEntity;
+		std::swap(map[_xPos][_yPos], map[_newXPos][_newYPos]);
 
 		updateEntity(_newXPos, _newYPos);
 		updateEntity(_xPos, _yPos);
 	}
 
 	void Map::setXPos(int _xPos, int _yPos, int _newXPos) {
-		nullEntity = new Entity();
-
-		deleteEntity(_newXPos, _xPos);
-
-		map[_newXPos][_yPos] = std::move(map[_xPos][_yPos]);
-		map[_xPos][_yPos] = nullEntity;
+		std::swap(map[_xPos][_yPos], map[_newXPos][_yPos]);
 
 		updateEntity(_newXPos, _yPos);
 		updateEntity(_xPos, _yPos);
 	}
 	
 	void Map::setYPos(int _xPos, int _yPos, int _newYPos) {
-		nullEntity = new Entity();
-
-		deleteEntity(_xPos, _newYPos);
+		std::swap(map[_xPos][_yPos], map[_xPos][_newYPos]);
 
 		map[_xPos][_newYPos] = std::move(map[_xPos][_yPos]);
 		map[_xPos][_yPos] = nullEntity;

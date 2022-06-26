@@ -25,7 +25,7 @@ namespace sim {
 		void setAge(int _age);
 
 	private:
-		Role role;
+		const Role role;
 		int age = 0;
 		int xPos = -1;
 		int yPos = -1;

@@ -32,7 +32,7 @@ namespace sim {
 
 		Entity* nullEntity;
 
-		int xSize;
-		int ySize;
+		const int xSize;
+		const int ySize;
 	};
 }
