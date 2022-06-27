@@ -21,9 +21,8 @@ namespace sim {
 		Entity* buffer = nullptr;
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
-				if (map[x][y] != nullptr && buffer != map[x][y]) {
+				if (buffer != map[x][y]) {
 					delete map[x][y];
-					map[x][y] = nullptr;
 				}
 				buffer = map[x][y];
 			}
@@ -89,8 +88,7 @@ namespace sim {
 		}
 	}
 	void Map::addEntity(Entity* _Entity, int _xPos, int _yPos) {
-		_Entity->setXPos(_xPos);
-		_Entity->setYPos(_yPos);
+		_Entity->setPos(_xPos, _yPos);
 		deleteEntity(_xPos, _yPos);
 		map[_xPos][_yPos] = _Entity;
 	}
