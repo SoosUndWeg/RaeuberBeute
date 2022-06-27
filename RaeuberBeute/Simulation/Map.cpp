@@ -1,6 +1,6 @@
-//Klasse zum erstellen eines zweidimensionalen Vektors, der alle moeglichen Entity (wie Tiere, Pflanzen, nullEntitys) enthaelt
 #include "Map.h"
 #include <iostream>
+#include <random>
 
 namespace sim {
 	//Konstruktor
@@ -30,31 +30,31 @@ namespace sim {
 	}
 
 	//get
-	Entity* Map::getEntity(int _xPos, int _yPos) { return map[_xPos][_yPos]; }
+	Entity* Map::getEntity(int xPos, int yPos) const { return map[xPos][yPos]; }
 
 	//set
-	void Map::setPos(int _xPos, int _yPos, int _newXPos, int _newYPos) {
-		std::swap(map[_xPos][_yPos], map[_newXPos][_newYPos]);
+	void Map::setPos(int xPos, int yPos, int newXPos, int newYPos) {
+		std::swap(map[xPos][yPos], map[newXPos][newYPos]);
 
-		updateEntity(_newXPos, _newYPos);
-		updateEntity(_xPos, _yPos);
+		updateEntity(newXPos, newYPos);
+		updateEntity(xPos, yPos);
 	}
 
-	void Map::setXPos(int _xPos, int _yPos, int _newXPos) {
-		std::swap(map[_xPos][_yPos], map[_newXPos][_yPos]);
+	void Map::setXPos(int xPos, int yPos, int newXPos) {
+		std::swap(map[xPos][yPos], map[newXPos][yPos]);
 
-		updateEntity(_newXPos, _yPos);
-		updateEntity(_xPos, _yPos);
+		updateEntity(newXPos, yPos);
+		updateEntity(xPos, yPos);
 	}
 	
-	void Map::setYPos(int _xPos, int _yPos, int _newYPos) {
-		std::swap(map[_xPos][_yPos], map[_xPos][_newYPos]);
+	void Map::setYPos(int xPos, int yPos, int newYPos) {
+		std::swap(map[xPos][yPos], map[xPos][newYPos]);
 
-		map[_xPos][_newYPos] = std::move(map[_xPos][_yPos]);
-		map[_xPos][_yPos] = nullEntity;
+		map[xPos][newYPos] = std::move(map[xPos][yPos]);
+		map[xPos][yPos] = nullEntity;
 
-		updateEntity(_xPos, _newYPos);
-		updateEntity(_xPos, _yPos);
+		updateEntity(xPos, newYPos);
+		updateEntity(xPos, yPos);
 	}
 
 	//sonstiges
@@ -66,15 +66,17 @@ namespace sim {
 		std::cout << "+\n";
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
-				role = map[x][y]->getRole();
-				if (role == predator) {
-					std::cout << "| # ";
-				}
-				else if (role == prey) {
-					std::cout << "| x ";
-				}
-				else if (role == plant) {
-					std::cout << "| * ";
+				if (map[x][y] != nullptr) {
+					role = map[x][y]->getRole();
+					if (role == predator) {
+						std::cout << "| # ";
+					}
+					else if (role == prey) {
+						std::cout << "| x ";
+					}
+					else if (role == plant) {
+						std::cout << "| * ";
+					}
 				}
 				else {
 					std::cout << "| O ";
@@ -87,21 +89,18 @@ namespace sim {
 			std::cout << "+\n";
 		}
 	}
-	void Map::addEntity(Entity* _Entity, int _xPos, int _yPos) {
-		_Entity->setPos(_xPos, _yPos);
-		deleteEntity(_xPos, _yPos);
-		map[_xPos][_yPos] = _Entity;
+	void Map::setEntity(Entity* entity, int xPos, int yPos) {
+		entity->setPos(xPos, yPos);
+		deleteEntity(xPos, yPos);
+		map[xPos][yPos] = entity;
 	}
-
 	void Map::fill() {
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
-				nullEntity = new Entity();
-				map[x][y] = nullEntity;
+				map[x][y] = nullptr;
 			}
 		}
 	}
-
 	void Map::updateAll() {
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
@@ -111,14 +110,34 @@ namespace sim {
 			}
 		}
 	}
-
-	void Map::updateEntity(int _xPos, int _yPos) {
-		map[_xPos][_yPos]->setPos(_xPos, _yPos);
+	void Map::updateEntity(int xPos, int yPos) {
+		map[xPos][yPos]->setPos(xPos, yPos);
 	}
+	void Map::deleteEntity(int xPos, int yPos) {
+		if (map[xPos][yPos] != nullptr) {
+			delete map[xPos][yPos];
+		}
+	}
+	void Map::spawn(Entity entity, int count) {
+		int x;
+		int y;
+		bool isEmpty;
 
-	void Map::deleteEntity(int _xPos, int _yPos) {
-		if (map[_xPos][_yPos] != nullptr) {
-			delete map[_xPos][_yPos];
+		if (count < this->xSize * this->ySize) {
+			for (int i = 0; i < count; i++) {
+				do {
+					x = (std::rand() % (this->xSize - 1));
+					y = (std::rand() % (this->ySize - 1));
+					isEmpty = map[x][y] != nullptr;
+					if (!isEmpty) {
+						map[x][y] = new Entity(entity);
+						std::cout << "Entity bei " << x << ", " << y << " hinzugefuegt." << std::endl;
+					}
+				} while (isEmpty);
+			}
+		}
+		else {
+			std::cerr << "Mehr Elemente versucht zu spawnen, als Platz ist\n";
 		}
 	}
 }

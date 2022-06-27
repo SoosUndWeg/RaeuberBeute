@@ -3,6 +3,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <iostream>
+
 #include "Entity.h"
 #include "Property.h"
 

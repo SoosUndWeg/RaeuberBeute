@@ -1,9 +1,10 @@
 #include <iostream>
 #include <cmath>
+#include <stdlib.h>
 
 #include "../Log.h"
 #include "../Simulation/Map.h"
-#include "../Simulation/Controller.h"
+#include "../Simulation/Core/Controller.h"
 #include "../Simulation/Entity/Property.h"
 #include "../Simulation/Entity/EntityLoader.h"
 
@@ -43,24 +44,23 @@ void lina() {
 }
 
 void kilian() {
+    std::cout << "Das hier wird geloescht" << std::endl;
+
+    system("CLS");
+
     sim::Entity* Ente = new sim::Entity(sim::predator);
     sim::Map map(10);
 
     Ente->setAge(12);
 
-    map.addEntity(Ente, 2, 2);
+    map.setEntity(Ente, 2, 2);
+    map.spawn((*Ente), 5);
 
     std::cout << map.getEntity(2, 2)->getAge() << std::endl;
     map.print();
 
     sim::Entity* Fuchs = new sim::Entity(sim::EntityLoader().load("Preset.txt"));
     std::cout << Fuchs->getRole() << " " << Fuchs->getName() << std::endl;
-
-    sim::Vision vision("Vision");
-    std::cout << vision.getName() << std::endl;
-    vision.setRange(2);
-    Fuchs->setVision(vision);
-
 
     delete Fuchs;
 }

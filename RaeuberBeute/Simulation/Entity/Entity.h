@@ -11,7 +11,6 @@ namespace sim {
 	public:
 		//Konstruktor
 		Entity();
-		Entity(const Entity&);
 		Entity(Role);
 
 		//get
@@ -21,8 +20,6 @@ namespace sim {
 		int getYPos() const;
 		std::string getName() const;
 
-		Vision getVision() const;
-
 		//set
 		void setPos(int, int);
 		void setXPos(int);
@@ -31,17 +28,12 @@ namespace sim {
 		void setRole(Role);
 		void setName(std::string);
 
-		void setVision(Vision);
 	private:
 		Role role;
 		std::string name;
 		int age = 0;
 		int xPos = -1;
 		int yPos = -1;
-
-		Vision vision = nullptr;
-		Environment environment = nullptr;
-		Movement movement = nullptr;
-		Attack attack = nullptr;
+		int foodCount = 4;
 	};
 }

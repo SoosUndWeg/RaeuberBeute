@@ -21,7 +21,7 @@
     <ClCompile Include="Log.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\Controller.cpp">
+    <ClCompile Include="Simulation\Core\Controller.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Simulation\Entity\Entity.cpp">
@@ -39,12 +39,36 @@
     <ClCompile Include="Simulation\Entity\EntityLoader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\Core\Simulation.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Entity\Entities\Prey.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Entity\Entities\Predator.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Entity\Entities\Plant.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Entity\Properties\Vision.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Entity\Properties\Environment.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Entity\Properties\Movement.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Entity\Properties\Attack.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation\Controller.h">
+    <ClInclude Include="Simulation\Core\Controller.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Entity\Entity.h">
@@ -60,6 +84,30 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Entity\EntityLoader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Core\Simulation.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Entities\Prey.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Entities\Predator.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Entities\Plant.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Properties\Vision.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Properties\Environment.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Properties\Movement.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Properties\Attack.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

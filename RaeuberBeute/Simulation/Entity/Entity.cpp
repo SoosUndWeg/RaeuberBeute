@@ -4,18 +4,15 @@
 namespace sim {
 	//Konstruktor
 	Entity::Entity() :role{ null }, xPos{ -1 }, yPos{ -1 }, name{ "unknown" } {}
-	Entity::Entity(const Entity& Entity) :role{ Entity.role }, xPos{ Entity.xPos }, yPos{ Entity.yPos }, name{ Entity.name } {}
 	Entity::Entity(Role role) : role{ role }, name{ "unknown" } {}
 	
 	//get
-	Role Entity::getRole() const { return role; }
-	int Entity::getAge() const { return age; }
-	int Entity::getXPos() const { return xPos; }
-	int Entity::getYPos() const { return yPos; }
+	Role Entity::getRole() const { return this->role; }
+	int Entity::getAge() const { return this->age; }
+	int Entity::getXPos() const { return this->xPos; }
+	int Entity::getYPos() const { return this->yPos; }
 	std::string Entity::getName() const { return this->name; }
 	
-	Vision Entity::getVision() const { return this->vision; }
-
 	//set
 	void Entity::setPos(int xPos, int yPos) {
 		this->xPos = xPos;
@@ -36,9 +33,5 @@ namespace sim {
 	}
 	void Entity::setName(std::string name) {
 		this->name = name;
-	}
-
-	void Entity::setVision(Vision vision) {
-		this->vision = vision;
 	}
 }

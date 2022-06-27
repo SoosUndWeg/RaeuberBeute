@@ -13,7 +13,7 @@ namespace sim {
 		~Map();
 
 		//get
-		Entity* getEntity(int, int);
+		Entity* getEntity(int, int) const;
 
 		//set
 		void setPos(int, int, int, int);
@@ -22,11 +22,14 @@ namespace sim {
 
 		//sonstiges
 		void print();
-		void addEntity(Entity*, int, int);
+
+		//manipulate Entities
+		void setEntity(Entity*, int, int);
 		void fill();
 		void updateAll();
 		void updateEntity(int, int);
 		void deleteEntity(int, int);
+		void spawn(Entity, int);
 	private:
 		std::vector<std::vector<Entity*>> map;
 
