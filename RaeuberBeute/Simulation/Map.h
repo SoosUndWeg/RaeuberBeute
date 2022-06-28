@@ -1,6 +1,12 @@
 #pragma once
 #include "Entity/Entity.h"
+#include "Entity/Entities/Predator.h"
+#include "Entity/Entities/Prey.h"
+#include "Entity/Entities/Plant.h"
+
+#include <iostream>
 #include <vector>
+#include <random>
 
 namespace sim {
 	class Map {
@@ -14,6 +20,9 @@ namespace sim {
 
 		//get
 		Entity* getEntity(int, int) const;
+		//Predator* getPredator(int, int) const;
+		//Prey* getPrey(int, int) const;
+		//Plant* getPlant(int, int) const;
 
 		//set
 		void setPos(int, int, int, int);
@@ -24,7 +33,7 @@ namespace sim {
 		void print();
 
 		//manipulate Entities
-		void setEntity(Entity*, int, int);
+		void setEntity(Entity, int, int);
 		void fill();
 		void updateAll();
 		void updateEntity(int, int);

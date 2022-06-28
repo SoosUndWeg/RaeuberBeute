@@ -18,9 +18,6 @@
     <ClCompile Include="main\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Simulation\Core\Controller.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -65,9 +62,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Log.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Simulation\Core\Controller.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -95,9 +89,6 @@
     <ClInclude Include="Simulation\Entity\Entities\Predator.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation\Entity\Entities\Plant.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Simulation\Entity\Properties\Vision.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -108,6 +99,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Entity\Properties\Attack.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Entity\Entities\Plant.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

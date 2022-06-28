@@ -11,7 +11,7 @@ namespace sim {
 	public:
 		//Konstruktor
 		Entity();
-		Entity(Role);
+		Entity(Role, std::string);
 
 		//get
 		Role getRole() const;
@@ -25,15 +25,17 @@ namespace sim {
 		void setXPos(int);
 		void setYPos(int);
 		void setAge(int);
-		void setRole(Role);
-		void setName(std::string);
 
-	private:
-		Role role;
-		std::string name;
+	protected:
+		const Role role;
+		const std::string name;
+		
 		int age = 0;
+
 		int xPos = -1;
 		int yPos = -1;
+
 		int foodCount = 4;
+		//static const int foodValue;
 	};
 }

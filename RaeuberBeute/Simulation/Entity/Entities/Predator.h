@@ -6,8 +6,11 @@
 #include "../Properties/Attack.h"
 
 namespace sim {
-	class Predator : public Entity {
-	public:
+	struct Predator : public Entity {
+		Predator();
+		Predator(const char*);
+		Predator(std::string);
+
 		Vision getVision() const;
 		Movement getMovement() const;
 		Attack getAttack() const;

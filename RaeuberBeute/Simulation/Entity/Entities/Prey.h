@@ -5,8 +5,11 @@
 #include "../Properties/Movement.h"
 
 namespace sim {
-	class Prey : public Entity {
-	public:
+	struct Prey : public Entity {
+		Prey();
+		Prey(const char*);
+		Prey(std::string);
+
 		Vision getVision() const;
 		Movement getMovement() const;
 

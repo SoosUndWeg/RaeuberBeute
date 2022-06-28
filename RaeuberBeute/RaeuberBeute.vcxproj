@@ -144,7 +144,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Log.cpp" />
     <ClCompile Include="main\main.cpp" />
     <ClCompile Include="Simulation\Core\Controller.cpp" />
     <ClCompile Include="Simulation\Core\Simulation.cpp" />
@@ -162,7 +161,6 @@
     <ClCompile Include="Simulation\Tools\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Log.h" />
     <ClInclude Include="Simulation\Core\Controller.h" />
     <ClInclude Include="Simulation\Core\Simulation.h" />
     <ClInclude Include="Simulation\Entity\Entities\Plant.h" />

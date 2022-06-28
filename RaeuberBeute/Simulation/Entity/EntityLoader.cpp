@@ -19,11 +19,11 @@ namespace sim {
 				entity = new Entity();
 
 				std::getline(fileStream, bString);
-				entity->setName(bString);
+				//entity->setName(bString);
 
 				std::getline(fileStream, bString);
 				std::istringstream(bString) >> bInt;
-				entity->setRole(static_cast<Role>(bInt));
+				//entity->setRole(static_cast<Role>(bInt));
 
 				std::getline(fileStream, bString);
 				

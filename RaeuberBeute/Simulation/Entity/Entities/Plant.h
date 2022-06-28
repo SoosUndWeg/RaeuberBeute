@@ -3,9 +3,10 @@
 #include "../Entity.h"
 
 namespace sim {
-	class Plant : public Entity {
-	public:
-		
+	struct Plant : public Entity {
+		Plant();
+		Plant(const char*);
+		Plant(std::string);
 	private:
 
 	};

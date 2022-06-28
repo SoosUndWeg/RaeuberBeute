@@ -3,8 +3,8 @@
 
 namespace sim {
 	//Konstruktor
-	Entity::Entity() :role{ null }, xPos{ -1 }, yPos{ -1 }, name{ "unknown" } {}
-	Entity::Entity(Role role) : role{ role }, name{ "unknown" } {}
+	Entity::Entity() :role{ null }, xPos{ -1 }, yPos{ -1 }, name{ "Entity" } {}
+	Entity::Entity(Role role, std::string name) : role{ role }, name{ name } {}
 	
 	//get
 	Role Entity::getRole() const { return this->role; }
@@ -27,11 +27,5 @@ namespace sim {
 
 	void Entity::setAge(int age) {
 		this->age = age;
-	}
-	void Entity::setRole(Role role) {
-		this->role = role;
-	}
-	void Entity::setName(std::string name) {
-		this->name = name;
 	}
 }

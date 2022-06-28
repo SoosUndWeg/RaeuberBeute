@@ -1,6 +1,4 @@
 #include "Map.h"
-#include <iostream>
-#include <random>
 
 namespace sim {
 	//Konstruktor
@@ -31,6 +29,9 @@ namespace sim {
 
 	//get
 	Entity* Map::getEntity(int xPos, int yPos) const { return map[xPos][yPos]; }
+	//Predator* Map::getPredator(int xPos, int yPos) const { return map[xPos][yPos]; }
+	//Prey* Map::getPrey(int xPos, int yPos) const { return map[xPos][yPos]; }
+	//Plant* Map::getPlant(int xPos, int yPos) const { return map[xPos][yPos]; }
 
 	//set
 	void Map::setPos(int xPos, int yPos, int newXPos, int newYPos) {
@@ -50,9 +51,6 @@ namespace sim {
 	void Map::setYPos(int xPos, int yPos, int newYPos) {
 		std::swap(map[xPos][yPos], map[xPos][newYPos]);
 
-		map[xPos][newYPos] = std::move(map[xPos][yPos]);
-		map[xPos][yPos] = nullEntity;
-
 		updateEntity(xPos, newYPos);
 		updateEntity(xPos, yPos);
 	}
@@ -66,17 +64,15 @@ namespace sim {
 		std::cout << "+\n";
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
-				if (map[x][y] != nullptr) {
-					role = map[x][y]->getRole();
-					if (role == predator) {
-						std::cout << "| # ";
-					}
-					else if (role == prey) {
-						std::cout << "| x ";
-					}
-					else if (role == plant) {
-						std::cout << "| * ";
-					}
+				role = map[x][y]->getRole();
+				if (role == predator) {
+					std::cout << "| # ";
+				}
+				else if (role == prey) {
+					std::cout << "| x ";
+				}
+				else if (role == plant) {
+					std::cout << "| * ";
 				}
 				else {
 					std::cout << "| O ";
@@ -89,15 +85,15 @@ namespace sim {
 			std::cout << "+\n";
 		}
 	}
-	void Map::setEntity(Entity* entity, int xPos, int yPos) {
-		entity->setPos(xPos, yPos);
+	void Map::setEntity(Entity entity, int xPos, int yPos) {
 		deleteEntity(xPos, yPos);
-		map[xPos][yPos] = entity;
+		map[xPos][yPos] = new Entity(entity);
+		updateEntity(xPos, yPos);
 	}
 	void Map::fill() {
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
-				map[x][y] = nullptr;
+				map[x][y] = new Entity();
 			}
 		}
 	}
@@ -128,10 +124,10 @@ namespace sim {
 				do {
 					x = (std::rand() % (this->xSize - 1));
 					y = (std::rand() % (this->ySize - 1));
-					isEmpty = map[x][y] != nullptr;
+					isEmpty = map[x][y]->getRole() != null;
 					if (!isEmpty) {
 						map[x][y] = new Entity(entity);
-						std::cout << "Entity bei " << x << ", " << y << " hinzugefuegt." << std::endl;
+						std::cout << entity.getName() << " bei " << x << ", " << y << " hinzugefuegt." << std::endl;
 					}
 				} while (isEmpty);
 			}
