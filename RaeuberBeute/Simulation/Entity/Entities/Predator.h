@@ -1,9 +1,6 @@
 #pragma once
 
 #include "../Entity.h"
-#include "../Properties/Vision.h"
-#include "../Properties/Movement.h"
-#include "../Properties/Attack.h"
 
 namespace sim {
 	struct Predator : public Entity {
@@ -11,13 +8,13 @@ namespace sim {
 		Predator(const char*);
 		Predator(std::string);
 
-		Vision getVision() const;
-		Movement getMovement() const;
-		Attack getAttack() const;
+		Vision getVision() const override;
+		Movement getMovement() const override;
+		Attack getAttack() const override;
 
-		void setVision(Vision);
-		void setMovement(Movement);
-		void setAttack(Attack);
+		void setVision(Vision) override;
+		void setMovement(Movement) override;
+		void setAttack(Attack) override;
 	private:
 		Vision vision;
 		Movement movement;

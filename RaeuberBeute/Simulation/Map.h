@@ -20,9 +20,7 @@ namespace sim {
 
 		//get
 		Entity* getEntity(int, int) const;
-		//Predator* getPredator(int, int) const;
-		//Prey* getPrey(int, int) const;
-		//Plant* getPlant(int, int) const;
+		int operator[] (int) const;
 
 		//set
 		void setPos(int, int, int, int);

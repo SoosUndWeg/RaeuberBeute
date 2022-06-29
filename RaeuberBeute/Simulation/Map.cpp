@@ -1,3 +1,4 @@
+//TODO Operator overload
 #include "Map.h"
 
 namespace sim {
@@ -28,10 +29,8 @@ namespace sim {
 	}
 
 	//get
-	Entity* Map::getEntity(int xPos, int yPos) const { return map[xPos][yPos]; }
-	//Predator* Map::getPredator(int xPos, int yPos) const { return map[xPos][yPos]; }
-	//Prey* Map::getPrey(int xPos, int yPos) const { return map[xPos][yPos]; }
-	//Plant* Map::getPlant(int xPos, int yPos) const { return map[xPos][yPos]; }
+	Entity* Map::getEntity(int xPos, int yPos) const { return this->map[xPos][yPos]; }
+	int Map::operator() (int xPos) const { return 1; }
 
 	//set
 	void Map::setPos(int xPos, int yPos, int newXPos, int newYPos) {

@@ -1,3 +1,4 @@
+//TODO x, y der Map anpassbar machen
 #include "Simulation.h"
 
 namespace sim {
@@ -12,6 +13,7 @@ namespace sim {
 	}
 
 	void Simulation::createDefaultMap() {
+		//std::unique_ptr<Entity> Fuchs = std::make_unique<Predator>("Fuchs");
 		Predator Fuchs("Fuchs");
 		Fuchs.setVision(Vision());
 		Fuchs.setAttack(Attack());
@@ -33,12 +35,22 @@ namespace sim {
 
 	}
 
+	//Logik der Entscheidung
+	//Suche Felder in Sichtweite ab und bewerte, wie gut sie sind
 	void Simulation::moveEntity(int xPos, int yPos) {
 		Role role = map->getEntity(xPos, yPos)->getRole();
+		std::vector<std::vector<int>> score;
 
 		if (role == predator) {
-			//Predator p((*map->getPredator(xPos, yPos)));
+			int vision = map->getEntity(1, 2)->getVision().getRange();
+			score.resize(vision, std::vector<int>(vision, 0));
 
+			//Felder im Umkreis durchgehen
+			for (int x = 0; x < vision + 1; x++) {
+				for (int y = 0; y < vision + 1; y++) {
+					//score[x][y] = 
+				}
+			}
 		}
 		else if (role == prey) {
 			//Prey p((*map->getPrey));
