@@ -20,7 +20,7 @@ namespace sim {
 
 		//get
 		Entity* getEntity(int, int) const;
-		int operator[] (int) const;
+		//int operator[] (int) const;
 
 		//set
 		void setPos(int, int, int, int);

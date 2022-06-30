@@ -45,7 +45,7 @@ void kilian() {
     system("CLS");
     
     sim::Simulation simulation;
-    simulation.createDefaultMap();
+    simulation.createTestMap();
 }
 
 int main() {

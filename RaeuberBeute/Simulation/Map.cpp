@@ -30,7 +30,7 @@ namespace sim {
 
 	//get
 	Entity* Map::getEntity(int xPos, int yPos) const { return this->map[xPos][yPos]; }
-	int Map::operator() (int xPos) const { return 1; }
+	//int Map::operator[] (int xPos) const { return 1; }
 
 	//set
 	void Map::setPos(int xPos, int yPos, int newXPos, int newYPos) {
@@ -121,8 +121,8 @@ namespace sim {
 		if (count < this->xSize * this->ySize) {
 			for (int i = 0; i < count; i++) {
 				do {
-					x = (std::rand() % (this->xSize - 1));
-					y = (std::rand() % (this->ySize - 1));
+					x = (std::rand() % this->xSize);
+					y = (std::rand() % this->ySize);
 					isEmpty = map[x][y]->getRole() != null;
 					if (!isEmpty) {
 						map[x][y] = new Entity(entity);
