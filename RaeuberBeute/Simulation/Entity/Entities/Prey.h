@@ -7,14 +7,14 @@ namespace sim {
 		Prey();
 		Prey(const char*);
 		Prey(std::string);
+		~Prey() override;
 
-		Vision getVision() const override;
-		Movement getMovement() const override;
+		std::shared_ptr<Vision> getVision() const override;
+		std::shared_ptr<Movement> getMovement() const override;
 
+		void setVision(std::shared_ptr<Vision>) override;
 		void setVision(Vision) override;
+		void setMovement(std::shared_ptr<Movement>) override;
 		void setMovement(Movement) override;
-	private:
-		Vision vision;
-		Movement movement;
 	};
 }

@@ -1,16 +1,13 @@
 #pragma once
 #include "Entity/Entity.h"
 #include "Entity/Entities/Predator.h"
-#include "Entity/Entities/Prey.h"
-#include "Entity/Entities/Plant.h"
+#include "Tools/Random.h"
 
 #include <iostream>
 #include <vector>
-#include <random>
 
 namespace sim {
-	class Map {
-	public:
+	struct Map {
 		//Konstruktor
 		Map(int);
 		Map(int, int);
@@ -20,6 +17,8 @@ namespace sim {
 
 		//get
 		Entity* getEntity(int, int) const;
+		int getXSize() const;
+		int getYSize() const;
 		//int operator[] (int) const;
 
 		//set

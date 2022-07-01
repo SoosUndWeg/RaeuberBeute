@@ -1,4 +1,5 @@
 #include "Vision.h"
+#include <iostream>
 
 namespace sim {
 	void Vision::setRange(int range) {

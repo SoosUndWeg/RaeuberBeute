@@ -1,4 +1,5 @@
 //TODO Operator overload
+//TODO Performance testing of sim::Random double call
 #include "Map.h"
 
 namespace sim {
@@ -30,6 +31,8 @@ namespace sim {
 
 	//get
 	Entity* Map::getEntity(int xPos, int yPos) const { return this->map[xPos][yPos]; }
+	int Map::getXSize() const { return this->xSize; }
+	int Map::getYSize() const { return this->ySize; }
 	//int Map::operator[] (int xPos) const { return 1; }
 
 	//set
@@ -121,8 +124,9 @@ namespace sim {
 		if (count < this->xSize * this->ySize) {
 			for (int i = 0; i < count; i++) {
 				do {
-					x = (std::rand() % this->xSize);
-					y = (std::rand() % this->ySize);
+					x = sim::Random().ranIntInRange(this->xSize - 1);
+					y = sim::Random().ranIntInRange(this->ySize - 1);
+
 					isEmpty = map[x][y]->getRole() != null;
 					if (!isEmpty) {
 						map[x][y] = new Entity(entity);

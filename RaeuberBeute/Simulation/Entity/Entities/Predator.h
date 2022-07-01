@@ -7,17 +7,17 @@ namespace sim {
 		Predator();
 		Predator(const char*);
 		Predator(std::string);
+		~Predator() override;
 
-		Vision getVision() const override;
-		Movement getMovement() const override;
-		Attack getAttack() const override;
+		std::shared_ptr<Vision> getVision() const override;
+		std::shared_ptr<Movement> getMovement() const override;
+		std::shared_ptr<Attack> getAttack() const override;
 
+		void setVision(std::shared_ptr<Vision>) override;
 		void setVision(Vision) override;
+		void setMovement(std::shared_ptr<Movement>) override;
 		void setMovement(Movement) override;
+		void setAttack(std::shared_ptr<Attack>) override;
 		void setAttack(Attack) override;
-	private:
-		Vision vision;
-		Movement movement;
-		Attack attack;
 	};
 }

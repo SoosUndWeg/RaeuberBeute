@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Map.h"
+//#include "../Entity/Entity.h"
 #include "../Entity/Entities/Predator.h"
 #include "../Entity/Entities/Prey.h"
 #include "../Entity/Entities/Plant.h"

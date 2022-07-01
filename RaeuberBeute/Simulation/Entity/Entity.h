@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <memory>
+
 #include "Property.h"
 #include "Properties/Vision.h"
 #include "Properties/Movement.h"
@@ -15,6 +17,8 @@ namespace sim {
 		//Konstruktor
 		Entity();
 		Entity(Role, std::string);
+		Entity(Entity&);
+		virtual ~Entity();
 
 		//get
 		Role getRole() const;
@@ -30,17 +34,27 @@ namespace sim {
 		void setAge(int);
 
 		//Virtual Functions
-		virtual Vision getVision() const { return nullptr; }
-		virtual Movement getMovement() const { return nullptr; }
-		virtual Attack getAttack() const { return nullptr; }
+		virtual std::shared_ptr<Vision> getVision() const { return vision; }
+		virtual std::shared_ptr<Movement> getMovement() const { return nullptr; }
+		virtual std::shared_ptr<Attack> getAttack() const { return nullptr; }
 
-		virtual void setVision(Vision) {};
+		virtual void setVision(std::shared_ptr<Vision>) {}
+		virtual void setVision(Vision) {}
+		virtual void setMovement(std::shared_ptr<Movement>) {}
 		virtual void setMovement(Movement) {}
+		virtual void setAttack(std::shared_ptr<Attack>) {}
 		virtual void setAttack(Attack) {}
 
 	protected:
 		const Role role;
 		const std::string name;
+
+		std::shared_ptr<Vision> vision = std::make_shared<Vision>();
+		std::shared_ptr<Movement> movement = std::make_shared<Movement>();
+		std::shared_ptr<Attack> attack = std::make_shared<Attack>();
+		//Vision* vision = new Vision();
+		//Movement* movement = new Movement();
+		//Attack* attack = new Attack();
 		
 		int age = 0;
 
@@ -48,6 +62,5 @@ namespace sim {
 		int yPos = -1;
 
 		int foodCount = 4;
-		//static const int foodValue;
 	};
 }

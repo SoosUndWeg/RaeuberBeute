@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main\main.cpp" />
+    <ClCompile Include="Simulation\Tools\Random.cpp" />
     <ClCompile Include="Simulation\Core\Controller.cpp" />
     <ClCompile Include="Simulation\Core\Simulation.cpp" />
     <ClCompile Include="Simulation\Entity\Entities\Plant.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Simulation\Tools\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Simulation\Tools\Random.h" />
     <ClInclude Include="Simulation\Core\Controller.h" />
     <ClInclude Include="Simulation\Core\Simulation.h" />
     <ClInclude Include="Simulation\Entity\Entities\Plant.h" />
