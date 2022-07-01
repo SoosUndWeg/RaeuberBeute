@@ -15,9 +15,7 @@ namespace sim {
 		this->yPos = entity.yPos;
 		this->foodCount = entity.foodCount;
 	}
-	Entity::~Entity() {
-		std::cout << "Entity wird geloescht\n";
-	}
+	Entity::~Entity() {}
 	
 	//get
 	Role Entity::getRole() const { return this->role; }

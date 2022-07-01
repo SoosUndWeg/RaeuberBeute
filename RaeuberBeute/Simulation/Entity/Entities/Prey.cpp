@@ -5,9 +5,7 @@ namespace sim {
 	Prey::Prey() : Entity{ prey, "Prey" } {}
 	Prey::Prey(const char* name) : Entity{ prey, name } {}
 	Prey::Prey(std::string name) : Entity{ prey, name } {}
-	Prey::~Prey() {
-		std::cout << "Prey wird geloescht.\n";
-	}
+	Prey::~Prey() {}
 
 	std::shared_ptr<Vision> Prey::getVision() const { return this->vision; }
 	std::shared_ptr<Movement> Prey::getMovement() const { return this->movement; }

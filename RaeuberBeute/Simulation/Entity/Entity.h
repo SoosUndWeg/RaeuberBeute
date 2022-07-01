@@ -35,8 +35,8 @@ namespace sim {
 
 		//Virtual Functions
 		virtual std::shared_ptr<Vision> getVision() const { return vision; }
-		virtual std::shared_ptr<Movement> getMovement() const { return nullptr; }
-		virtual std::shared_ptr<Attack> getAttack() const { return nullptr; }
+		virtual std::shared_ptr<Movement> getMovement() const { return movement; }
+		virtual std::shared_ptr<Attack> getAttack() const { return attack; }
 
 		virtual void setVision(std::shared_ptr<Vision>) {}
 		virtual void setVision(Vision) {}

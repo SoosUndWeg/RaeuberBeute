@@ -5,9 +5,7 @@ namespace sim {
 	Predator::Predator() : Entity{ predator, "Predator" } {}
 	Predator::Predator(const char* name) : Entity{ predator, name } {}
 	Predator::Predator(std::string name) : Entity{ predator, name } {}
-	Predator::~Predator() {
-		std::cout << "Predator wird geloescht.\n";
-	}
+	Predator::~Predator() {}
 
 	std::shared_ptr<Vision> Predator::getVision() const { return this->vision; }
 	std::shared_ptr<Movement> Predator::getMovement() const { return this->movement; }

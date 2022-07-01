@@ -1,5 +1,6 @@
 //TODO Operator overload
 //TODO Performance testing of sim::Random double call
+//TODO Schablone für print()
 #include "Map.h"
 
 namespace sim {
