@@ -43,17 +43,13 @@ namespace sim {
 		map->spawn(Grass, mapYSize * 2);
 		map->print();
 
-		for (int y = 0; y < mapYSize; y++) {
-			for (int x = 0; x < mapXSize; x++) {
-				moveEntity(x, y);
-			}
-		}
+		updateEntityTracker();
 	}
 	//Test Map zum haendischen erstellen verschiedener Szenarios zum debuggen
 	void Simulation::createTestMap() {
 		Predator Fuchs("Fuchs");
 		Vision vision("Fuchs vision");
-		vision.setRange(3);
+		vision.setRange(1);
 		Movement movement("Fuchs movement");
 		movement.setRange(1);
 		Fuchs.setVision(vision);
@@ -81,7 +77,23 @@ namespace sim {
 		map->setEntity(Grass, 4, 4);
 
 		map->print();
-		moveEntity(8, 9);
+		updateEntityTracker();
+	}
+
+	//Schritt in der Simulation machen
+	void Simulation::step() {
+
+		for (std::weak_ptr<Entity> tmp_weak_ptr : entityTracker) {
+			if (std::shared_ptr<Entity> tmp_shared_ptr = tmp_weak_ptr.lock()) {
+				moveEntity(tmp_shared_ptr->getXPos(), tmp_shared_ptr->getYPos());
+			}
+		}
+		map->print();
+		updateEntityTracker();
+	}
+	void Simulation::run(int steps) {
+		for (int i = 0; i < steps; i++)
+			step();
 	}
 
 	//Herzstueck der Simulation
@@ -208,16 +220,21 @@ namespace sim {
 						}
 					}
 					//Zufaelliges Feld aus den besten waehlen
-					target = choicePool[Random().ranIntInRange(choicePool.size() - 1)];
+					if (choicePool.size() > 0)
+						target = choicePool[Random().ranIntInRange(choicePool.size() - 1)];
+					else
+						target = { xPos, yPos };
 					
 					//Schauen, ob Zielfeld dem aktuellen Feld entspricht
-					if (target.first =! xPos && target.second != yPos) {
+					if (target.first =! xPos || target.second != yPos) {
 						//Auf entsprechendes Feld bewegen, eventuell essen
 						if (map->getEntity(target.first, target.second)->getRole() == prey) {
+							std::cout << "Laufe von [" << xPos << ", " << yPos << "] los und esse Prey auf Feld [" << target.first << ", " << target.second << "]\n";
 							map->getEntity(xPos, yPos)->eat(map->getEntity(target.first, target.second)->getFoodCount());
 							map->setPos(xPos, yPos, target.first, target.second);
 						}
 						else {
+							std::cout << "Predator bewegt sich von [" << xPos << ", " << yPos << "] auf Feld [" << target.first << ", " << target.second << "]\n";
 							map->setPos(xPos, yPos, target.first, target.second);
 							//Wenn das Entity auf dem Zielfeld z.B. eine Pflanze ist, wird sie geloescht
 							if (map->getEntity(xPos, yPos)->getRole() != null) {
@@ -226,6 +243,7 @@ namespace sim {
 						}
 					}
 				}
+#if 0
 				for (int y = 0; y < yMax - yMin + 1; y++) {
 					for (int x = 0; x < xMax - xMin + 1; x++) {
 						std::cout << "+---";
@@ -240,6 +258,7 @@ namespace sim {
 					std::cout << "+---";
 				}
 				std::cout << "+\n";
+#endif
 			}
 		}
 		//******************Prey********************************
@@ -380,10 +399,13 @@ namespace sim {
 						}
 					}
 					//Zufaelliges Feld aus den besten waehlen
-					target = choicePool[Random().ranIntInRange(choicePool.size() - 1)];
+					if (choicePool.size() > 0)
+						target = choicePool[Random().ranIntInRange(choicePool.size() - 1)];
+					else
+						target = { xPos, yPos };
 
 					//Schauen, ob Zielfeld dem aktuellen Feld entspricht
-					if (target.first = !xPos && target.second != yPos) {
+					if (target.first = !xPos || target.second != yPos) {
 						//Auf entsprechendes Feld bewegen, eventuell essen
 						if (map->getEntity(target.first, target.second)->getRole() == plant) {
 							map->getEntity(xPos, yPos)->eat(map->getEntity(target.first, target.second)->getFoodCount());
@@ -394,6 +416,7 @@ namespace sim {
 						}
 					}
 				}
+#if 0
 				for (int y = 0; y < yMax - yMin + 1; y++) {
 					for (int x = 0; x < xMax - xMin + 1; x++) {
 						std::cout << "+---";
@@ -408,7 +431,42 @@ namespace sim {
 					std::cout << "+---";
 				}
 				std::cout << "+\n";
+#endif
 			}
 		}
+	}
+
+	//Entity Tracker
+	void Simulation::clearEntityTracker() {
+		std::cout << entityTracker.size() << "\n";
+		for (int i = 0; i < entityTracker.size(); i++) {
+			if (entityTracker[i].expired()) {
+				entityTracker.erase(entityTracker.begin() + i);
+			}
+		}
+		std::cout << entityTracker.size() << "\n";
+	}
+	void Simulation::addToEntityTracker(int xPos, int yPos) {
+		entityTracker.emplace_back(std::weak_ptr<Entity>(map->getEntity(xPos, yPos)));
+	}
+	void Simulation::updateEntityTracker() {
+		entityTracker.clear();
+		for (int y = 0; y < mapYSize; y++) {
+			for (int x = 0; x < mapXSize; x++) {
+				if (map->getEntity(x, y)->getRole() != null)
+					addToEntityTracker(x, y);
+			}
+		}
+	}
+
+	//Sonstiges
+	int Simulation::getRoleCount(Role role) const {
+		int counter = 0;
+		for (int i = 0; i < entityTracker.size(); i++) {
+			if (std::shared_ptr<Entity> tmp_ptr = entityTracker[i].lock())
+				if (tmp_ptr->getRole() == role)
+					counter++;
+		}
+		return counter;
 	}
 }

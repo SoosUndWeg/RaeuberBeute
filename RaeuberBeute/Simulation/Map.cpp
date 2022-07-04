@@ -42,7 +42,11 @@ namespace sim {
 
 	//set
 	void Map::setPos(int xPos, int yPos, int newXPos, int newYPos) {
-		std::swap(map[xPos][yPos], map[newXPos][newYPos]);
+		//std::swap(map[xPos][yPos], map[newXPos][newYPos]);
+		//std::iter_swap(map[xPos][yPos], map[newXPos][newYPos]);
+		std::shared_ptr<Entity> tmp_shared_ptr = map[xPos][yPos];
+		map[xPos][yPos] = map[newXPos][newYPos];
+		map[newXPos][newYPos] = tmp_shared_ptr;
 
 		updateEntity(newXPos, newYPos);
 		updateEntity(xPos, yPos);

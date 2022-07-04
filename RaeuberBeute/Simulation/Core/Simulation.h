@@ -15,14 +15,21 @@ namespace sim {
 		void createDefaultMap();
 		void createTestMap();
 
+		void step();
+		void run(int);
 		void moveEntity(int, int);
 
+		void clearEntityTracker();
+		void addToEntityTracker(int, int);
+		void updateEntityTracker();
+
+		int getRoleCount(Role) const;
 	private:
 		Map* map;
 
 		std::vector<std::weak_ptr<Entity>> entityTracker;
 
-		int mapXSize;
-		int mapYSize;
+		const int mapXSize;
+		const int mapYSize;
 	};
 }

@@ -1,11 +1,14 @@
 #include "Controller.h"
 
 namespace sim {
-	Controller::Controller(sim::Map* map) {
-		this->map = map;
-	}
-	Controller::~Controller() {
-		if (map != nullptr)
-			delete map;
+	//Konstruktor
+	Controller::Controller() :simulationSteps{ 10 } {}
+	Controller::Controller(int simulationSteps) : simulationSteps{ simulationSteps } {}
+
+	//Destruktor
+	Controller::~Controller() {}
+
+	void Controller::startSimulation() {
+
 	}
 }

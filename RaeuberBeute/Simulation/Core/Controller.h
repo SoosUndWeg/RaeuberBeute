@@ -4,9 +4,14 @@
 namespace sim {
 	class Controller {
 	public:
-		Controller(sim::Map*);
+		Controller();
+		Controller(int);
 		~Controller();
+
+		void startSimulation();
 	private:
-		sim::Map* map = nullptr;
+		const int simulationSteps;
+		static inline bool printToConsole = false;
+		static inline bool printToFile = false;
 	};
 }

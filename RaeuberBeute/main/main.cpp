@@ -41,8 +41,11 @@ void lina() {
 
 void kilian() {
     sim::Simulation simulation(12, 10);
-    //simulation.createTestMap();
-    simulation.createDefaultMap();
+    simulation.createTestMap();
+    //simulation.createDefaultMap();
+    simulation.run(4);
+    std::cout << "Anzahl Predator: " << simulation.getRoleCount(sim::predator) << "\n";
+    std::cout << "Anzahl Prey    : " << simulation.getRoleCount(sim::prey) << "\n";
 }
 
 int main() {
