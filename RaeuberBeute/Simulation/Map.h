@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 namespace sim {
 	struct Map {
@@ -30,6 +31,7 @@ namespace sim {
 		void print();
 
 		//manipulate Entities
+		void setEntity(int, int);
 		void setEntity(Entity, int, int);
 		void fill();
 		void updateAll();
@@ -38,6 +40,8 @@ namespace sim {
 		void spawn(Entity, int);
 	private:
 		std::vector<std::vector<Entity*>> map;
+
+		std::string blueprint = "";
 
 		Entity* nullEntity;
 

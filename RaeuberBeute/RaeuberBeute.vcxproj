@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main\main.cpp" />
+    <ClCompile Include="Simulation\Tools\Tools.cpp" />
     <ClCompile Include="Simulation\Tools\Random.cpp" />
     <ClCompile Include="Simulation\Core\Controller.cpp" />
     <ClCompile Include="Simulation\Core\Simulation.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Simulation\Entity\Property.h" />
     <ClInclude Include="Simulation\Map.h" />
     <ClInclude Include="Simulation\Tools\Timer.h" />
+    <ClInclude Include="Simulation\Tools\Tools.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

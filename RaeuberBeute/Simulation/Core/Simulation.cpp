@@ -1,15 +1,20 @@
-//TODO x, y der Map anpassbar machen
-//TODO Performance testing of 
+//TODO Performance testing of everything bruh (vll)
 #include "Simulation.h"
 #include <iomanip>
 
 namespace sim {
-	Simulation::Simulation() : mapSize{ 10 } {
+	//Konstruktor
+	Simulation::Simulation() : mapXSize{ 10 }, mapYSize{ 10 } {
+		map = new Map(10);
+	}
+	Simulation::Simulation(int mapSize) : mapXSize{ mapSize }, mapYSize{ mapSize } {
 		map = new Map(mapSize);
 	}
-	Simulation::Simulation(int mapSize) : mapSize{ mapSize } {
-		map = new Map(mapSize);
+	Simulation::Simulation(int mapXSize, int mapYSize) : mapXSize{ mapXSize }, mapYSize{ mapYSize } {
+		map = new Map(mapXSize, mapYSize);
 	}
+
+	//Destruktor
 	Simulation::~Simulation() {
 		delete map;
 	}
@@ -26,20 +31,24 @@ namespace sim {
 
 		Plant Grass("Grass");
 
-		map->spawn(Fuchs, mapSize);
-		map->spawn(Ente, mapSize);
-		map->spawn(Grass, mapSize * 2);
+		map->spawn(Fuchs, mapXSize);
+		map->spawn(Ente, mapXSize);
+		map->spawn(Grass, mapYSize * 2);
 
+		std::cout << "Alles gespawnt" << std::endl;
 		map->print();
+		std::cout << "Fertig ausgegeben\n";
 	}
 
 	void Simulation::createTestMap() {
 		Predator Fuchs("Fuchs");
 		Vision vision("Fuchs vision");
-		vision.setRange(2);
+		vision.setRange(3);
+		Movement movement("Fuchs movement");
+		movement.setRange(2);
 		Fuchs.setVision(vision);
 		Fuchs.setAttack(Attack());
-		Fuchs.setMovement(Movement());
+		Fuchs.setMovement(movement);
 
 		std::cout << "Movement Range: " << Fuchs.getMovement()->getRange() << std::endl;
 
@@ -51,20 +60,18 @@ namespace sim {
 
 		Plant Grass("Grass");
 
-		map->setEntity(Fuchs, 0, 0);
+		map->setEntity(Fuchs, 0, 1);
 		map->setEntity(Fuchs, 9, 0);
 		map->setEntity(Fuchs, 1, 1);
-		map->setEntity(Fuchs, 2, 2);
-		std::cout << "Vision aus Map extrahiert: " << map->getEntity(2, 2)->getVision()->getRange() << std::endl;
-		std::cout << "Movement aus Map extrahiert: " << map->getEntity(2, 2)->getMovement()->getRange() << std::endl;
+		map->setEntity(Fuchs, 14, 2);
 		map->setEntity(Fuchs, 8, 8);
-		map->setEntity(Ente, 9, 9);
-		std::cout << "Vision aus Map extrahiert: " << map->getEntity(2, 3)->getVision()->getRange() << std::endl;
+		map->setEntity(Fuchs, 9, 9);
+		map->setEntity(Ente, 8, 9);
 		map->setEntity(Ente, 7, 7);
 		map->setEntity(Grass, 4, 4);
 
 		map->print();
-		moveEntity(8, 8);
+		moveEntity(9, 9);
 
 		std::cout << "Ende von Simulation::createTestMap()" << std::endl;
 	}
@@ -81,84 +88,135 @@ namespace sim {
 		int yMin, yMax;
 			  
 		if (role == predator) {
-			int vision = map->getEntity(xPos, yPos)->getVision()->getRange();
-			int movement = map->getEntity(xPos, yPos)->getMovement()->getRange();
-			
-			std::cout << "xPos: " << xPos << ", yPos: " << yPos << ", vision: " << vision << std::endl;
-			
-			//Pruefen, ob Sichtweite die Spielfeldgroesse ueberschreitet
-			xMin = xPos - vision < 0 ? 0 : xPos - vision;
-			xMax = map->getXSize() - 1 - xPos - vision < 0 ? map->getXSize() - 1 : xPos + vision;
-			yMin = yPos - vision < 0 ? 0 : yPos - vision;
-			yMax = map->getYSize() - 1 - yPos - vision < 0 ? map->getYSize() - 1 : yPos + vision;
+			//Am Anfang jedes Zuges 1 Essen verlieren
+			map->getEntity(xPos, yPos)->starve();
+			//Predator toeten, sofern Essen <= 0 ist
+			if (map->getEntity(xPos, yPos)->getFoodCount() <= 0) {
+				map->deleteEntity(xPos, yPos);
+				map->setEntity(xPos, yPos);
+			}
+			else {
+				//Schauen, ob Predator genug Essen besitzt, um sich zu vermehren
+				if (map->getEntity(xPos, yPos)->getFoodCount() >= 8) {
 
-			score.resize(xMax - xMin + 1, std::vector<int>(yMax - yMin + 1, 0));
+				}
+				else {
+					int vision = map->getEntity(xPos, yPos)->getVision()->getRange();
+					int movement = map->getEntity(xPos, yPos)->getMovement()->getRange();
 
-			std::cout << xMin << ", " << xMax << ", " << yMin << ", " << yMax << std::endl;
+					std::cout << "xPos: " << xPos << ", yPos: " << yPos << ", vision: " << vision << std::endl;
 
-			//Felder im Umkreis durchgehen
-			for (int x = 0; x < xMax - xMin + 1; x++) {
-				for (int y = 0; y < yMax - yMin + 1; y++) {
-					std::cout << "Ueberpruefe bei x=" << x << ", y=" << y << "\n";
-					std::cout << "-> Map Pos:     x=" << x + xMin << ", y=" << y + yMin << "\n";
+					//Pruefen, ob Sichtweite die Spielfeldgroesse ueberschreitet
+					xMin = xPos - vision < 0 ? 0 : xPos - vision;
+					xMax = map->getXSize() - 1 - xPos - vision < 0 ? map->getXSize() - 1 : xPos + vision;
+					yMin = yPos - vision < 0 ? 0 : yPos - vision;
+					yMax = map->getYSize() - 1 - yPos - vision < 0 ? map->getYSize() - 1 : yPos + vision;
 
-					if (map->getEntity(x + xMin, y + yMin)->getRole() == prey) {
-						//Score von dem Feld und den umliegenden Felder hochsetzen
-						score[x][y] += 4;
-						if (x > 0)
-							score[x - 1][y] += 2;
-						if (x > 0 && y > 0)
-							score[x - 1][y - 1] += 2;
-						if (y > 0)
-							score[x][y - 1] += 2;
-						if (y > 0 && x < xMax - xMin)
-							score[x + 1][y - 1] += 2;
-						if (x < xMax - xMin)
-							score[x + 1][y] += 2;
-						if (x < xMax - xMin && y < yMax - yMin)
-							score[x + 1][y + 1] += 2;
-						if (y < yMax - yMin)
-							score[x][y + 1] += 2;
-						if (x > 0 && y < yMax - yMin)
-							score[x - 1][y + 1] += 2;
+					//Wie schon in map muss bei direktem Zugriff auf score x und y vertauscht werden (score[y][x] = ...)
+					score.resize(yMax - yMin + 1, std::vector<int>(xMax - xMin + 1, 0));
+
+					std::cout << xMin << ", " << xMax << ", " << yMin << ", " << yMax << std::endl;
+
+					//Felder im Umkreis durchgehen
+					for (int y = 0; y < yMax - yMin + 1; y++) {
+						for (int x = 0; x < xMax - xMin + 1; x++) {
+							if (map->getEntity(x + xMin, y + yMin)->getRole() == prey) {
+								//Score von dem Feld und den umliegenden Feldern hochsetzen
+								score[x][y] += 4;
+								if (x > 0)
+									score[x - 1][y] += 1;
+								if (x > 0 && y > 0)
+									score[x - 1][y - 1] += 1;
+								if (y > 0)
+									score[x][y - 1] += 1;
+								if (y > 0 && x < xMax - xMin)
+									score[x + 1][y - 1] += 1;
+								if (x < xMax - xMin)
+									score[x + 1][y] += 1;
+								if (x < xMax - xMin && y < yMax - yMin)
+									score[x + 1][y + 1] += 1;
+								if (y < yMax - yMin)
+									score[x][y + 1] += 1;
+								if (x > 0 && y < yMax - yMin)
+									score[x - 1][y + 1] += 1;
+							}
+							else if (map->getEntity(x + xMin, y + yMin)->getRole() == predator) {
+								score[y][x] -= 10;
+							}
+						}
 					}
-					else if (map->getEntity(x + xMin, y + yMin)->getRole() == predator) {
-						score[x][y] -= 10;
+					//Heimat Feld auf neutral setzen
+					score[yPos - yMin][xPos - xMin] = 0;
+
+					//Dafuer sorgen, dass der Score-Vector nicht ueber- oder unterschritten wird
+					int xMinMove = xPos - xMin - movement < 0 ? 0 : xPos - xMin - movement;
+					int xMaxMove = xPos - xMin + movement > xMax - xMin ? xMax - xMin + 1 : xPos - xMin + movement + 1;
+					int yMinMove = yPos - yMin - movement < 0 ? 0 : yPos - yMin - movement;
+					int yMaxMove = yPos - yMin + movement > yMax - yMin ? yMax - xMin + 1 : yPos - yMin + movement + 1;
+
+					std::cout << "xMinMove: " << xMinMove << ", xMaxMove: " << xMaxMove << ", yMinMove: " << yMinMove << ", yMaxMove: " << yMaxMove << "\n";
+					//Highscore aus allen erreichbaren Feldern bestimmen
+					std::vector<std::pair<int, int>> choicePool;
+					for (int y = yMinMove; y < yMaxMove; y++) {
+						for (int x = xMinMove; x < xMaxMove; x++) {
+							highscore = score[x][y] > highscore ? score[x][y] : highscore;
+						}
 					}
-					
-					//neuen Bestscore setzen
-					highscore = score[x][y] > highscore ? score[x][y] : highscore;
+					std::cout << "Highscore: " << highscore << std::endl;
+					//Beste Felder dem Vector hinzufuegen
+					for (int y = yMinMove; y < yMaxMove; y++) {
+						for (int x = xMinMove; x < xMaxMove; x++) {
+							if (score[x][y] == highscore)
+								choicePool.emplace_back(std::pair<int, int>{x + xMin, y + yMin});
+						}
+					}
+					//Zufaelliges Feld aus den besten waehlen
+					std::pair<int, int> target = choicePool[Random().ranIntInRange(choicePool.size() - 1)];
+					std::cout << "Groesse des Choice-Pools: " << choicePool.size() << ", zufaellig ausgewaehlt wurde: x=" << target.first << ", y=" << target.second << std::endl;
+
+					//Schauen, ob Zielfeld dem aktuellen Feld entspricht
+					if (target.first =! xPos && target.second != yPos) {
+						//Auf entsprechendes Feld bewegen, eventuell essen
+						if (map->getEntity(target.first, target.second)->getRole() == prey) {
+							map->getEntity(xPos, yPos)->eat(map->getEntity(target.first, target.second)->getFoodCount());
+							map->setPos(xPos, yPos, target.first, target.second);
+							map->deleteEntity(xPos, yPos);
+						}
+						else {
+							map->setPos(xPos, yPos, target.first, target.second);
+							//Wenn das Entity auf dem Zielfeld z.B. eine Pflanze ist, wird sie geloescht
+							if (map->getEntity(xPos, yPos)->getRole() != null) {
+								map->deleteEntity(xPos, yPos);
+								map->setEntity(xPos, yPos);
+							}
+						}
+					}
+					else {
+						std::cout << "Zielfeld entspricht aktuellem Feld\n";
+					}
 				}
 			}
 
-			//Aktuelles Feld auf neutral setzen
-			score[xPos - xMin][yPos - yMin] = 0;
-
-
-			std::cout << "Highscore: " << highscore << std::endl;
-
-			for (int x = 0; x < vision + 1; x++) {
-
+			for (int y = 0; y < yMax - yMin + 1; y++) {
+				for (int x = 0; x < xMax - xMin + 1; x++) {
+					std::cout << "+---";
+				}
+				std::cout << "+\n";
+				for (int x = 0; x < xMax - xMin + 1; x++) {
+					std::cout << "|" << std::setw(3) << score[x][y];
+				}
+				std::cout << "|\n";
 			}
+			for (int x = 0; x < xMax - xMin + 1; x++) {
+				std::cout << "+---";
+			}
+			std::cout << "+\n";
 		}
 		else if (role == prey) {
 			//Prey p((*map->getPrey));
 
 		}
 
-		for (int x = 0; x < score.size(); x++) {
-			for (int y = 0; y < score[0].size(); y++) {
-				std::cout << "+---";
-			}
-			std::cout << "+\n";
-			for (int y = 0; y < score[0].size(); y++) {
-				std::cout << "|" << std::setw(3) << score[x][y];
-			}
-			std::cout << "|\n";
-		}
-		for (int y = 0; y < score[0].size(); y++) {
-			std::cout << "+---";
-		}
-		std::cout << "+\n";
+		
 	}
 }

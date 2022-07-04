@@ -40,11 +40,7 @@ void lina() {
 }
 
 void kilian() {
-    std::cout << "Das hier wird geloescht" << std::endl;
-
-    system("CLS");
-    
-    sim::Simulation simulation;
+    sim::Simulation simulation(20, 15);
     simulation.createTestMap();
     //simulation.createDefaultMap();
 }

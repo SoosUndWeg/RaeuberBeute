@@ -6,7 +6,7 @@ namespace sim {
 	Entity::Entity() :role{ null }, xPos{ -1 }, yPos{ -1 }, name{ "Entity" } {}
 	Entity::Entity(Role role, std::string name) : role{ role }, name{ name } {}
 	//Copy Constructor
-	Entity::Entity(Entity& entity) : role{ entity.getRole() } {
+	Entity::Entity(Entity& entity) : role{ entity.getRole() }, name{ entity.name } {
 		this->vision = entity.vision;
 		this->movement = entity.movement;
 		this->attack = entity.attack;
@@ -23,6 +23,7 @@ namespace sim {
 	int Entity::getXPos() const { return this->xPos; }
 	int Entity::getYPos() const { return this->yPos; }
 	std::string Entity::getName() const { return this->name; }
+	int Entity::getFoodCount() const { return this->foodCount; }
 	
 	//set
 	void Entity::setPos(int xPos, int yPos) {
@@ -38,5 +39,22 @@ namespace sim {
 
 	void Entity::setAge(int age) {
 		this->age = age;
+	}
+
+	//sonstiges
+	void Entity::eat(int food) {
+		foodCount += food;
+	}
+	void Entity::eat(Entity food) {
+		foodCount += food.getFoodCount();
+	}
+	void Entity::eat(Entity* food) {
+		foodCount += food->getFoodCount();
+	}
+	void Entity::starve() {
+		foodCount -= 1;
+	}
+	void Entity::starve(int hunger) {
+		foodCount -= hunger;
 	}
 }

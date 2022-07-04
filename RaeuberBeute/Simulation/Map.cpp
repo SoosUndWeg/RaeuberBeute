@@ -1,30 +1,44 @@
 //TODO Operator overload
 //TODO Performance testing of sim::Random double call
-//TODO Schablone für print()
+
 #include "Map.h"
 
 namespace sim {
 	//Konstruktor
 	Map::Map(int Size) : xSize{ Size }, ySize{ Size }{
-		map.resize(xSize, std::vector<Entity*>(ySize, nullptr));
+		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
+		for (int x = 0; x < xSize; x++) {
+			blueprint += "+---";
+		}
+		blueprint += "+\n";
+
+		map.resize(Size, std::vector<Entity*>(Size, nullptr));
 		fill();
 		updateAll();
 	}
 	Map::Map(int xSize, int ySize) : xSize{ xSize }, ySize{ ySize }{
+		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
+		for (int x = 0; x < xSize; x++) {
+			blueprint += "+---";
+		}
+		blueprint += "+\n";
+		std::cout << "Resize Vector...\n";
 		map.resize(xSize, std::vector<Entity*>(ySize, nullptr));
+		std::cout << "Resized Vector.\nFilling Vector...\n";
 		fill();
+		std::cout << "Filled Vector.\nUpdating all...\n";
 		updateAll();
+		std::cout << "Updated all.\n";
 	}
 
 	//Destruktor
 	Map::~Map() {
 		//Alle durch "new" erstellten Objekte loeschen
 		Entity* buffer = nullptr;
-		for (int x = 0; x < xSize; x++) {
-			for (int y = 0; y < ySize; y++) {
-				if (buffer != map[x][y]) {
+		for (int y = 0; y < ySize; y++) {
+			for (int x = 0; x < xSize; x++) {
+				if (buffer != map[x][y])
 					delete map[x][y];
-				}
 				buffer = map[x][y];
 			}
 		}
@@ -61,12 +75,12 @@ namespace sim {
 	//sonstiges
 	void Map::print() {
 		Role role;
-		for (int y = 0; y < ySize; y++) {
+		for (int x = 0; x < xSize; x++) {
 			std::cout << "+---";
 		}
-		std::cout << "+\n";
-		for (int x = 0; x < xSize; x++) {
-			for (int y = 0; y < ySize; y++) {
+		std::cout << "+-> X\n";
+		for (int y = 0; y < ySize; y++) {
+			for (int x = 0; x < xSize; x++) {
 				role = map[x][y]->getRole();
 				if (role == predator) {
 					std::cout << "| # ";
@@ -78,15 +92,17 @@ namespace sim {
 					std::cout << "| * ";
 				}
 				else {
-					std::cout << "| O ";
+					std::cout << "|   ";
 				}
 			}
-			std::cout << "|\n";
-			for (int y = 0; y < ySize; y++) {
-				std::cout << "+---";
-			}
-			std::cout << "+\n";
+			std::cout << "|\n" << blueprint;
 		}
+		std::cout << "|\nV\nY\n";
+	}
+	void Map::setEntity(int xPos, int yPos) {
+		deleteEntity(xPos, yPos);
+		map[xPos][yPos] = new Entity;
+		updateEntity(xPos, yPos);
 	}
 	void Map::setEntity(Entity entity, int xPos, int yPos) {
 		deleteEntity(xPos, yPos);
@@ -94,18 +110,17 @@ namespace sim {
 		updateEntity(xPos, yPos);
 	}
 	void Map::fill() {
-		for (int x = 0; x < xSize; x++) {
-			for (int y = 0; y < ySize; y++) {
+		for (int y = 0; y < ySize; y++) {
+			for (int x = 0; x < xSize; x++) {
 				map[x][y] = new Entity();
 			}
 		}
 	}
 	void Map::updateAll() {
-		for (int x = 0; x < xSize; x++) {
-			for (int y = 0; y < ySize; y++) {
-				if (map[x][y] != nullptr) {
+		for (int y = 0; y < ySize; y++) {
+			for (int x = 0; x < xSize; x++) {
+				if (map[x][y] != nullptr)
 					map[x][y]->setPos(x, y);
-				}
 			}
 		}
 	}
@@ -113,9 +128,8 @@ namespace sim {
 		map[xPos][yPos]->setPos(xPos, yPos);
 	}
 	void Map::deleteEntity(int xPos, int yPos) {
-		if (map[xPos][yPos] != nullptr) {
+		if (map[xPos][yPos] != nullptr)
 			delete map[xPos][yPos];
-		}
 	}
 	void Map::spawn(Entity entity, int count) {
 		int x;
@@ -131,7 +145,7 @@ namespace sim {
 					isEmpty = map[x][y]->getRole() != null;
 					if (!isEmpty) {
 						map[x][y] = new Entity(entity);
-						std::cout << entity.getName() << " bei " << x << ", " << y << " hinzugefuegt." << std::endl;
+						std::cout << entity.getName() << " mit der Rolle " << entity.getRole() << " bei " << x << ", " << y << " hinzugefuegt." << std::endl;
 					}
 				} while (isEmpty);
 			}

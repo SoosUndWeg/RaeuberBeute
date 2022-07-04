@@ -63,6 +63,9 @@
     <ClCompile Include="Simulation\Tools\Random.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\Tools\Tools.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Simulation\Core\Controller.h">
@@ -108,6 +111,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Tools\Random.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Tools\Tools.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
