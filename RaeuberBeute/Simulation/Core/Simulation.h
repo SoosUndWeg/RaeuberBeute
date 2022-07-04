@@ -1,12 +1,9 @@
 #pragma once
 
-#include <tuple>
+#include <memory>
+#include <vector>
 
 #include "../Map.h"
-#include "../Entity/Entities/Predator.h"
-#include "../Entity/Entities/Prey.h"
-#include "../Entity/Entities/Plant.h"
-#include "../Tools/Random.h"
 
 namespace sim {
 	struct Simulation {
@@ -22,6 +19,9 @@ namespace sim {
 
 	private:
 		Map* map;
+
+		std::vector<std::weak_ptr<Entity>> entityTracker;
+
 		int mapXSize;
 		int mapYSize;
 	};

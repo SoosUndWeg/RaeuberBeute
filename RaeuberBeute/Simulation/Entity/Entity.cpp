@@ -15,6 +15,15 @@ namespace sim {
 		this->yPos = entity.yPos;
 		this->foodCount = entity.foodCount;
 	}
+	Entity::Entity(const Entity& entity) : role{ entity.getRole() }, name{ entity.name } {
+		this->vision = entity.vision;
+		this->movement = entity.movement;
+		this->attack = entity.attack;
+		this->age = entity.age;
+		this->xPos = entity.xPos;
+		this->yPos = entity.yPos;
+		this->foodCount = entity.foodCount;
+	}
 	Entity::~Entity() {}
 	
 	//get
@@ -36,9 +45,11 @@ namespace sim {
 	void Entity::setYPos(int yPos) {
 		this->yPos = yPos; 
 	}
-
 	void Entity::setAge(int age) {
 		this->age = age;
+	}
+	void Entity::setFoodCount(int foodCount) {
+		this->foodCount = foodCount;
 	}
 
 	//sonstiges

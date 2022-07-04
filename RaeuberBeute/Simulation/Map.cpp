@@ -1,7 +1,11 @@
 //TODO Operator overload
 //TODO Performance testing of sim::Random double call
+//TODO Umsteigen auf shared_ptr, in Simulation.cpp ueber weak_ptr dann tracken
 
 #include "Map.h"
+#include "Tools/Random.h"
+
+#include <iostream>
 
 namespace sim {
 	//Konstruktor
@@ -12,7 +16,7 @@ namespace sim {
 		}
 		blueprint += "+\n";
 
-		map.resize(Size, std::vector<Entity*>(Size, nullptr));
+		map.resize(Size, std::vector<std::shared_ptr<Entity>>(Size, nullptr));
 		fill();
 		updateAll();
 	}
@@ -22,30 +26,16 @@ namespace sim {
 			blueprint += "+---";
 		}
 		blueprint += "+\n";
-		std::cout << "Resize Vector...\n";
-		map.resize(xSize, std::vector<Entity*>(ySize, nullptr));
-		std::cout << "Resized Vector.\nFilling Vector...\n";
+		map.resize(xSize, std::vector<std::shared_ptr<Entity>>(ySize, nullptr));
 		fill();
-		std::cout << "Filled Vector.\nUpdating all...\n";
 		updateAll();
-		std::cout << "Updated all.\n";
 	}
 
 	//Destruktor
-	Map::~Map() {
-		//Alle durch "new" erstellten Objekte loeschen
-		Entity* buffer = nullptr;
-		for (int y = 0; y < ySize; y++) {
-			for (int x = 0; x < xSize; x++) {
-				if (buffer != map[x][y])
-					delete map[x][y];
-				buffer = map[x][y];
-			}
-		}
-	}
+	Map::~Map() {}
 
 	//get
-	Entity* Map::getEntity(int xPos, int yPos) const { return this->map[xPos][yPos]; }
+	std::shared_ptr<Entity> Map::getEntity(int xPos, int yPos) const { return this->map[xPos][yPos]; }
 	int Map::getXSize() const { return this->xSize; }
 	int Map::getYSize() const { return this->ySize; }
 	//int Map::operator[] (int xPos) const { return 1; }
@@ -100,19 +90,17 @@ namespace sim {
 		std::cout << "|\nV\nY\n";
 	}
 	void Map::setEntity(int xPos, int yPos) {
-		deleteEntity(xPos, yPos);
-		map[xPos][yPos] = new Entity;
+		map[xPos][yPos] = std::make_shared<Entity>(Entity());
 		updateEntity(xPos, yPos);
 	}
 	void Map::setEntity(Entity entity, int xPos, int yPos) {
-		deleteEntity(xPos, yPos);
-		map[xPos][yPos] = new Entity(entity);
+		map[xPos][yPos] = std::make_shared<Entity>(entity);
 		updateEntity(xPos, yPos);
 	}
 	void Map::fill() {
 		for (int y = 0; y < ySize; y++) {
 			for (int x = 0; x < xSize; x++) {
-				map[x][y] = new Entity();
+				map[x][y] = std::make_shared<Entity>(Entity());
 			}
 		}
 	}
@@ -127,10 +115,6 @@ namespace sim {
 	void Map::updateEntity(int xPos, int yPos) {
 		map[xPos][yPos]->setPos(xPos, yPos);
 	}
-	void Map::deleteEntity(int xPos, int yPos) {
-		if (map[xPos][yPos] != nullptr)
-			delete map[xPos][yPos];
-	}
 	void Map::spawn(Entity entity, int count) {
 		int x;
 		int y;
@@ -144,8 +128,7 @@ namespace sim {
 
 					isEmpty = map[x][y]->getRole() != null;
 					if (!isEmpty) {
-						map[x][y] = new Entity(entity);
-						std::cout << entity.getName() << " mit der Rolle " << entity.getRole() << " bei " << x << ", " << y << " hinzugefuegt." << std::endl;
+						map[x][y] = std::make_shared<Entity>(entity);
 					}
 				} while (isEmpty);
 			}

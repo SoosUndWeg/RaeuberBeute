@@ -17,6 +17,7 @@ namespace sim {
 		Entity();
 		Entity(Role, std::string);
 		Entity(Entity&);
+		Entity(const Entity&);
 		virtual ~Entity();
 
 		//get
@@ -32,6 +33,7 @@ namespace sim {
 		void setXPos(int);
 		void setYPos(int);
 		void setAge(int);
+		void setFoodCount(int);
 
 		//sonstiges
 		void eat(int);

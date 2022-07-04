@@ -40,9 +40,9 @@ void lina() {
 }
 
 void kilian() {
-    sim::Simulation simulation(20, 15);
-    simulation.createTestMap();
-    //simulation.createDefaultMap();
+    sim::Simulation simulation(12, 10);
+    //simulation.createTestMap();
+    simulation.createDefaultMap();
 }
 
 int main() {

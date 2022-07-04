@@ -1,11 +1,9 @@
 #pragma once
 #include "Entity/Entity.h"
-#include "Entity/Entities/Predator.h"
-#include "Tools/Random.h"
 
-#include <iostream>
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace sim {
 	struct Map {
@@ -17,7 +15,7 @@ namespace sim {
 		~Map();
 
 		//get
-		Entity* getEntity(int, int) const;
+		std::shared_ptr<Entity> getEntity(int, int) const;
 		int getXSize() const;
 		int getYSize() const;
 		//int operator[] (int) const;
@@ -36,14 +34,13 @@ namespace sim {
 		void fill();
 		void updateAll();
 		void updateEntity(int, int);
-		void deleteEntity(int, int);
 		void spawn(Entity, int);
 	private:
-		std::vector<std::vector<Entity*>> map;
+		std::vector<std::vector<std::shared_ptr<Entity>>> map;
 
 		std::string blueprint = "";
 
-		Entity* nullEntity;
+		//Entity* nullEntity;
 
 		const int xSize;
 		const int ySize;
