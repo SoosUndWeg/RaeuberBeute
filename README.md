@@ -1,10 +1,9 @@
 Information zu Einstellungsmöglichkeiten der Simulation
 -------------------------------------------------------
 
-Einstellungen können über Objekte des Structs sim::Simulation vorgenommen werden. Im folgenden werden die einzelnen Funktionen der Einstellungen erklärt. Die Standarteinstellungen stehen direkt beim syntax dabei.  
-
+Einstellungen können über Objekte des Structs sim::Simulation vorgenommen werden. Im folgenden werden die einzelnen Funktionen der Einstellungen erklärt. Die Standarteinstellungen stehen direkt beim Syntax dabei. Ein Entity kann vier verschiedene Rollen annehmen: *null*, *predator*, *prey*, und *plant*. Mit Zug ist hier gemeint, dass ein Entity (sofern es möglich ist) eine Entscheidung trifft, um sich z.B. zu bewegen oder auch nichts zu tun. Wenn von Schritt die Rede ist, ist der Zustand gemeint, sobald jedes Entity in der Map seinen Zug gemacht hat.
+****************************
 **Ausgaben in die Konsole:**
-************************
 
 ```c++
 static inline bool print_console = true;
@@ -13,15 +12,15 @@ Aktiviert (true) oder deaktiviert (false) die grundlegende Möglichkeit der Simu
 ```c++
 static inline bool print_console_map;
 ```
-Aktiviert (true) oder deaktiviert (false) die Ausgabe der Map nach jedem Schritt (jedes Entity hat seinen Zug gemacht) der Simulation.
+Aktiviert (true) oder deaktiviert (false) die Ausgabe der Map nach jedem Schritt der Simulation.
 ```c++
 static inline bool **print_console_detailed_map = false;  
 ```
-Aktiviert (true) oder deaktiviert (false) die Ausgabe der Map nach jedem Zug eines Entitys, also eine Ausgabe, sobald es eine veränderung gibt.
+Aktiviert (true) oder deaktiviert (false) die Ausgabe der Map nach jedem Zug eines Entitys.
 ```c++
 static inline bool print_console_score_map = false;
 ```
-Aktiviert (true) oder deaktiviert (false) die Ausgabe des zweidimensionalen Vektors score, der bei der Findung des bestmöglichen Zugs erzeugt wird.
+Aktiviert (true) oder deaktiviert (false) die Ausgabe des zweidimensionalen Vektors *score*, der bei der Findung des bestmöglichen Zugs erzeugt wird.
 ```c++
 static inline bool print_console_entity_count = true;
 ```
@@ -35,24 +34,33 @@ static inline int print_console_animation_pause_ms = 100;
 ```
 Diese Einstellung gibt die Zeit in Millisekunden an, die mit dem Löschen gewartet wird, nachdem eine neue Map geladen wurde. Sollte die Animation zu langsam/schnell sein, kann das hier angepasst werden.  
   
+**************************
 **Ausgabe in eine Datei:**
-*********************
-Der Name der Datei ist *"simulation_data.txt"*. Die Option *print_file_entity_count* kann in Kombination mit *print_file_positions* und *print_file_positions_compressed* aktiviert werden und wird automatisch deaktiviert, sollte sie mit nicht kompatiblen Optionen verwendet werden. Ansonsten gilt die Priorität:  
+Der Name der erstellten Datei ist *"simulation_data.txt"*. Die Option *print_file_entity_count* kann in Kombination mit *print_file_positions*, *print_file_positions_compressed* oder alleine aktiviert werden und wird automatisch deaktiviert, sollte sie mit nicht kompatiblen Optionen verwendet werden. Ansonsten gilt die Priorität bei nicht kompatiblen Einstellungen:  
 *positions_detailed* > *positions_detailed_compressed* > *positions_compressed* > *positions*  
+Die nachfolgenden Einstellungen aktivieren (true) oder deaktivieren (false) die Ausgabe verschiedener Daten in eine Datei.
 ```c++
 static inline bool print_file_positions = false;
 ```
-Aktiviert (true) oder deaktiviert (false) die Ausgabe der Positionen pro Schritt der Simulation in die Datei
+Diese Option speichert die komplette Map einmal pro Schritt ab, das umfasst auch Entitys mit der Rolle *null*. Sie ist kompatibel mit *print_file_entity_count*.
+```c++
 static inline bool print_file_positions_compressed = false;
-static inline bool print_file_positions_detailed = false;
+```
+Diese Option speichert alle Entitys einmal pro Schritt ab, außer Entitys mit der Rolle *null*. Sie ist kompatibel mit *print_file_entity_count*.
+```c++
 static inline bool print_file_positions_detailed_compressed = false;
+```
+Diese Option speichert alle Entitys außer Entitys mit der Rolle *null* einmal pro Zug in der Datei ab. Sie ist nicht kompatibel mit *print_file_entity_count* und deaktiviert diese automatisch.
+```c++
+static inline bool print_file_positions_detailed = false;
+```
+Diese Option speichert alle Entitys einmal pro Zug in der Datei ab, das umfasst auch Entitys mit der Rolle *null*. Sie ist nicht kompatibel mit *print_file_entity_count* und deaktiviert diese automatisch.
 ```c++
 static inline bool print_file_entity_count = false;
 ```
-Aktiviert (true) oder deaktiviert (false) die Ausgabe der detaillierten
-static inline bool print_file_entity_count = false;
+Diese Option speichert die Anzahl der Entitys nach Rollen in der Datei ab. Sie ist nicht kompatibel mit den obigen zwei Einstellungen und wird durch diese automatisch deaktiviert.  
 
-static inline bool respawn_plants = true;
+
 static inline int predator_max_age = 12;
 static inline int predator_reproduction_threshold = 8;
 static inline int predator_reproduction_cost = 4;
@@ -64,3 +72,4 @@ static inline int prey_reproduction_cost = 4;
 static inline int prey_quantity = 0;
 
 static inline int plant_quantity = 0;
+static inline bool plants_respawn = true;
