@@ -75,7 +75,27 @@ namespace sim {
 		updateEntityTracker();
 		plantSetpoint = getRoleCount(plant);
 
+		//Sofern Ausgabe in Konsole aktiviert wurde, entsprechende Option ausfuehren
+		if (print_console && print_console_entity_count && !print_console_animation_create) {
+			std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
+			std::cout << "Prey    :" << getRoleCount(prey) << "\n";
+			std::cout << "Plant   :" << getRoleCount(plant) << "\n\n";
+		}
+		if (print_console && (print_console_animation_create || print_console_detailed_map))
+			map->print();
+		//Sofern Ausgabe in Datei Aktiviert wurde, entsprechende Option ausfuehren
 		if (print_file) {
+			if (print_file_positions_detailed) {}
+			else if (print_file_positions_detailed_compressed) {}
+			else if (print_file_entity_count) {
+				fileStream << steps << " ";
+				fileStream << predator << " " << getRoleCount(predator) << " ";
+				fileStream << prey << " " << getRoleCount(prey) << " ";
+				fileStream << plant << " " << getRoleCount(plant) << " ";
+				fileStream << null << " " << getRoleCount(null) << " ";
+				if (!print_file_positions && !print_file_positions_compressed && !print_file_positions_detailed)
+					fileStream << "\n";
+			}
 			//Vollstaendige Map in Datei schreiben
 			if (print_file_positions_detailed) {
 				fileStream << steps << " ";
@@ -86,13 +106,34 @@ namespace sim {
 				}
 				fileStream << "\n";
 			}
-			//Position aller Entitys, die nicht null sind, in datei schreiben
+			//Position aller Entitys, die nicht null sind, in Datei schreiben
 			else if (print_file_positions_detailed_compressed) {
 				fileStream << steps << " ";
 				for (int y = 0; y < mapYSize; y++) {
 					for (int x = 0; x < mapXSize; x++) {
 						if (map->getEntity(x, y)->getRole() != null)
 							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+					}
+				}
+				fileStream << "\n";
+			}
+			else if (print_file_positions_compressed) {
+				if (!print_file_entity_count)
+					fileStream << steps << " ";
+				for (int y = 0; y < mapYSize; y++) {
+					for (int x = 0; x < mapXSize; x++) {
+						if (map->getEntity(x, y)->getRole() != null)
+							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+					}
+				}
+				fileStream << "\n";
+			}
+			else if (print_file_positions) {
+				if (!print_file_entity_count)
+					fileStream << steps << " ";
+				for (int y = 0; y < mapYSize; y++) {
+					for (int x = 0; x < mapXSize; x++) {
+						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 					}
 				}
 				fileStream << "\n";
@@ -133,7 +174,27 @@ namespace sim {
 		updateEntityTracker();
 		plantSetpoint = getRoleCount(plant);
 
+		//Sofern Ausgabe in Konsole aktiviert wurde, entsprechende Option ausfuehren
+		if (print_console && print_console_entity_count && print_console_animation_create) {
+			std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
+			std::cout << "Prey    :" << getRoleCount(prey) << "\n";
+			std::cout << "Plant   :" << getRoleCount(plant) << "\n\n";
+		}
+		if (print_console && (print_console_animation_create || print_console_detailed_map))
+			map->print();
+		//Sofern Ausgabe in Datei aktiviert wurde, entsprechende Option ausfuehren
 		if (print_file) {
+			if (print_file_positions_detailed) {}
+			else if (print_file_positions_detailed_compressed) {}
+			else if (print_file_entity_count) {
+				fileStream << steps << " ";
+				fileStream << predator << " " << getRoleCount(predator) << " ";
+				fileStream << prey << " " << getRoleCount(prey) << " ";
+				fileStream << plant << " " << getRoleCount(plant) << " ";
+				fileStream << null << " " << getRoleCount(null) << " ";
+				if (!print_file_positions && !print_file_positions_compressed && !print_file_positions_detailed)
+					fileStream << "\n";
+			}
 			//Vollstaendige Map in Datei schreiben
 			if (print_file_positions_detailed) {
 				fileStream << steps << " ";
@@ -144,13 +205,34 @@ namespace sim {
 				}
 				fileStream << "\n";
 			}
-			//Position aller Entitys, die nicht null sind, in datei schreiben
+			//Position aller Entitys, die nicht null sind, in Datei schreiben
 			else if (print_file_positions_detailed_compressed) {
 				fileStream << steps << " ";
 				for (int y = 0; y < mapYSize; y++) {
 					for (int x = 0; x < mapXSize; x++) {
 						if (map->getEntity(x, y)->getRole() != null)
 							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+					}
+				}
+				fileStream << "\n";
+			}
+			else if (print_file_positions_compressed) {
+				if (!print_file_entity_count)
+					fileStream << steps << " ";
+				for (int y = 0; y < mapYSize; y++) {
+					for (int x = 0; x < mapXSize; x++) {
+						if (map->getEntity(x, y)->getRole() != null)
+							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+					}
+				}
+				fileStream << "\n";
+			}
+			else if (print_file_positions) {
+				if (!print_file_entity_count)
+					fileStream << steps << " ";
+				for (int y = 0; y < mapYSize; y++) {
+					for (int x = 0; x < mapXSize; x++) {
+						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 					}
 				}
 				fileStream << "\n";
