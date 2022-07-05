@@ -42,7 +42,6 @@ namespace sim {
 		static inline bool print_file_positions_detailed = false;
 		static inline bool print_file_entity_count = false;
 
-		static inline bool respawn_plants = true;
 		static inline int predator_max_age = 12;
 		static inline int predator_reproduction_threshold = 8;
 		static inline int predator_reproduction_cost = 4;
@@ -54,6 +53,7 @@ namespace sim {
 		static inline int prey_quantity = 0;
 
 		static inline int plant_quantity = 0;
+		static inline bool plants_respawn = true;
 	private:
 		Map* map;
 

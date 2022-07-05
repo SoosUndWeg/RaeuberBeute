@@ -249,7 +249,7 @@ namespace sim {
 			}
 		}
 
-		if (respawn_plants)
+		if (plants_respawn)
 			map->spawn(Plant(), plantSetpoint - getRoleCount(plant));
 		
 		//Je nach Einstellungen in Konsole und/oder in Datei ausgeben
