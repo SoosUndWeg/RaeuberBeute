@@ -36,7 +36,10 @@ namespace sim {
 		static inline bool print_console_animation_create = false;
 		static inline int print_console_animation_pause_ms = 100;
 
-		static inline bool print_file_detailed_positions = false;
+		static inline bool print_file_positions = false;
+		static inline bool print_file_positions_compressed = false;
+		static inline bool print_file_positions_detailed_compressed = false;
+		static inline bool print_file_positions_detailed = false;
 		static inline bool print_file_entity_count = false;
 
 		static inline bool respawn_plants = true;

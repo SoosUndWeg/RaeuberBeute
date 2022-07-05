@@ -16,7 +16,7 @@ namespace sim {
 		simulation.print_console_detailed_map = false;
 		simulation.print_console_animation_create = true;
 		simulation.print_console_score_map = false;
-		simulation.print_file_detailed_positions = false;
+		simulation.print_file_positions_detailed = false;
 		simulation.createDefaultMap();
 		simulation.run(20);
 	}
