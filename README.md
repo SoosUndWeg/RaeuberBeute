@@ -36,6 +36,7 @@ Diese Einstellung gibt die Zeit in Millisekunden an, die mit dem Löschen gewart
   
 **************************
 **Ausgabe in eine Datei:**
+
 Der Name der erstellten Datei ist *"simulation_data.txt"*. Die Option *print_file_entity_count* kann in Kombination mit *print_file_positions*, *print_file_positions_compressed* oder alleine aktiviert werden und wird automatisch deaktiviert, sollte sie mit nicht kompatiblen Optionen verwendet werden. Ansonsten gilt die Priorität bei nicht kompatiblen Einstellungen:  
 *positions_detailed* > *positions_detailed_compressed* > *positions_compressed* > *positions*  
 Die nachfolgenden Einstellungen aktivieren (true) oder deaktivieren (false) die Ausgabe verschiedener Daten in eine Datei.
@@ -62,6 +63,7 @@ Diese Option speichert die Anzahl der Entitys nach Rollen in der Datei ab. Sie i
 
 **************************
 **Predator Einstellungen**
+
 Die nachfolgenden Einstellungen beziehen sich auf Entitys der Rolle *predator*.
 ```c++
 static inline int predator_max_age = 12;
@@ -82,6 +84,7 @@ Legt die anfängliche Anzahl an Entitys der Rolle *predator* fest. Standartmäß
 
 ************************
 **Prey Einstellungen**
+
 Die nachfolgenden Einstellungen beziehen sich auf Entitys der Rolle *prey*.
 ```c++
 static inline int prey_max_age = 12;
@@ -101,6 +104,7 @@ static inline int prey_quantity = 0;
 Legt die anfängliche Anzahl an Entitys der Rolle *prey* fest. Standartmäßig wird der Wert wird im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Beutetieren zu haben.  
 ***********************
 **Plant Einstellungen**
+
 Die nachfolgenden Einstellungen beziehen sich auf Entitys der Rolle *plant*.
 ```c++
 static inline int plant_quantity = 0;
