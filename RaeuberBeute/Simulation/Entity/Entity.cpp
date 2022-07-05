@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include <iostream>
 
 namespace sim {
 	//Konstruktor
@@ -67,5 +66,11 @@ namespace sim {
 	}
 	void Entity::starve(int hunger) {
 		foodCount -= hunger;
+	}
+	void Entity::getOlder() {
+		this->age += 1;
+	}
+	void Entity::getOlder(int age) {
+		this->age += age;
 	}
 }

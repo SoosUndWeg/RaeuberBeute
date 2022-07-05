@@ -3,7 +3,7 @@
 namespace sim {
 	void clearConsole() {
 #ifdef _WIN32
-		system("CLR");
+		system("cls");
 #endif
 #ifdef LINUX
 		system("clear");

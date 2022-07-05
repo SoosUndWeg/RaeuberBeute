@@ -2,7 +2,7 @@
 #include <cmath>
 #include <stdlib.h>
 
-#include "../Simulation/Core/Simulation.h"
+#include "../Simulation/Core/Controller.h"
 
 double f(double t, double x) {                                        // Definition der Funktion f(t,x) 
     int i = 1;
@@ -40,12 +40,7 @@ void lina() {
 }
 
 void kilian() {
-    sim::Simulation simulation(12, 10);
-    simulation.createTestMap();
-    //simulation.createDefaultMap();
-    simulation.run(4);
-    std::cout << "Anzahl Predator: " << simulation.getRoleCount(sim::predator) << "\n";
-    std::cout << "Anzahl Prey    : " << simulation.getRoleCount(sim::prey) << "\n";
+    sim::Controller().startSimulation();
 }
 
 int main() {

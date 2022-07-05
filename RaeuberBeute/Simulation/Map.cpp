@@ -91,7 +91,7 @@ namespace sim {
 			}
 			std::cout << "|\n" << blueprint;
 		}
-		std::cout << "|\nV\nY\n";
+		std::cout << "|\nV\nY" << std::endl;
 	}
 	void Map::setEntity(int xPos, int yPos) {
 		map[xPos][yPos] = std::make_shared<Entity>(Entity());
@@ -140,5 +140,6 @@ namespace sim {
 		else {
 			std::cerr << "Mehr Elemente versucht zu spawnen, als Platz ist\n";
 		}
+		updateAll();
 	}
 }

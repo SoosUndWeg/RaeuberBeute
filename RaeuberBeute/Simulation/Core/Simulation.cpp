@@ -1,29 +1,59 @@
-//TODO Performance testing of everything bruh (vll)
 #include "Simulation.h"
 #include "../Entity/Entities/Predator.h"
 #include "../Entity/Entities/Prey.h"
 #include "../Entity/Entities/Plant.h"
 #include "../Tools/Random.h"
+#include "../Tools/Tools.h"
 
 #include <iomanip>
 #include <iostream>
 #include <tuple>
+#include <chrono>
+#include <thread>
 
 namespace sim {
 	//Konstruktor
 	Simulation::Simulation() : mapXSize{ 10 }, mapYSize{ 10 } {
 		map = new Map(10);
+		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
+		fileStream.open("simulation_data.txt");
+		if (!fileStream.is_open())
+			print_file = false;
+
+		//Standart Anzahl fuer Entitys setzten, abhängig von der Mapgroesse (von der Laengsten Seite)
+		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
 	}
 	Simulation::Simulation(int mapSize) : mapXSize{ mapSize }, mapYSize{ mapSize } {
 		map = new Map(mapSize);
+		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
+		fileStream.open("simulation_data.txt");
+		if (!fileStream.is_open())
+			print_file = false;
+
+		//Standart Anzahl fuer Entitys setzten, abhängig von der Mapgroesse (von der Laengsten Seite)
+		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
 	}
 	Simulation::Simulation(int mapXSize, int mapYSize) : mapXSize{ mapXSize }, mapYSize{ mapYSize } {
 		map = new Map(mapXSize, mapYSize);
+		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
+		fileStream.open("simulation_data.txt");
+		if (!fileStream.is_open())
+			print_file = false;
+
+		//Standart Anzahl fuer Entitys setzten, abhängig von der Mapgroesse (von der Laengsten Seite)
+		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
 	}
 
 	//Destruktor
 	Simulation::~Simulation() {
 		delete map;
+		fileStream.close();
 	}
 
 	void Simulation::createDefaultMap() {
@@ -38,12 +68,12 @@ namespace sim {
 
 		Plant Grass("Grass");
 
-		map->spawn(Fuchs, mapXSize);
-		map->spawn(Ente, mapXSize);
-		map->spawn(Grass, mapYSize * 2);
-		map->print();
+		map->spawn(Fuchs, predator_quantity);
+		map->spawn(Ente, prey_quantity);
+		map->spawn(Grass, plant_quantity);
 
 		updateEntityTracker();
+		plantSetpoint = getRoleCount(plant);
 	}
 	//Test Map zum haendischen erstellen verschiedener Szenarios zum debuggen
 	void Simulation::createTestMap() {
@@ -76,20 +106,55 @@ namespace sim {
 		map->setEntity(Ente, 7, 7);
 		map->setEntity(Grass, 4, 4);
 
-		map->print();
 		updateEntityTracker();
+		plantSetpoint = getRoleCount(plant);
 	}
 
 	//Schritt in der Simulation machen
 	void Simulation::step() {
-
 		for (std::weak_ptr<Entity> tmp_weak_ptr : entityTracker) {
 			if (std::shared_ptr<Entity> tmp_shared_ptr = tmp_weak_ptr.lock()) {
-				moveEntity(tmp_shared_ptr->getXPos(), tmp_shared_ptr->getYPos());
+				if((tmp_shared_ptr->getRole() != null) && (tmp_shared_ptr->getRole() != plant))
+					moveEntity(tmp_shared_ptr->getXPos(), tmp_shared_ptr->getYPos());
 			}
 		}
-		map->print();
+
+		if (respawn_plants)
+			map->spawn(Plant(), plantSetpoint - getRoleCount(plant));
+		
+		//Je nach Einstellungen in Konsole und/oder in Datei ausgeben
+		if (print_console) {
+			if (print_console_map && !print_console_detailed_map && !print_console_animation_create)
+				map->print();
+			if (print_console_entity_count && !print_console_animation_create) {
+				std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
+				std::cout << "Prey    :" << getRoleCount(prey) << "\n";
+				std::cout << "Plant   :" << getRoleCount(plant) << "\n\n";
+			}
+		}
+		if (print_file) {
+			if (print_file_entity_count) {
+				fileStream << steps << " ";
+				fileStream << predator << " " << getRoleCount(predator) << " ";
+				fileStream << prey << " " << getRoleCount(prey) << " ";
+				fileStream << plant << " " << getRoleCount(plant) << " ";
+				fileStream << null << " " << getRoleCount(null) << " ";
+				if (!print_file_detailed_positions)
+					fileStream << "\n";
+			}
+			if (print_file_detailed_positions) {
+				if (!print_file_entity_count)
+					fileStream << steps << " ";
+				for (int y = 0; y < mapYSize; y++) {
+					for (int x = 0; x < mapXSize; x++) {
+						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+					}
+				}
+				fileStream << "\n";
+			}
+		}
 		updateEntityTracker();
+		steps++;
 	}
 	void Simulation::run(int steps) {
 		for (int i = 0; i < steps; i++)
@@ -110,6 +175,10 @@ namespace sim {
 			if (map->getEntity(xPos, yPos)->getFoodCount() <= 0) {
 				map->setEntity(xPos, yPos);
 			}
+			//Predator toeten, sofern zu alt
+			else if (map->getEntity(xPos, yPos)->getAge() > predator_max_age) {
+				map->setEntity(xPos, yPos);
+			}
 			else {
 				int vision = map->getEntity(xPos, yPos)->getVision()->getRange();
 				int movement = map->getEntity(xPos, yPos)->getMovement()->getRange();
@@ -124,7 +193,7 @@ namespace sim {
 				int yMin, yMax;
 
 				//Schauen, ob Predator genug Essen besitzt, um sich zu vermehren
-				if (map->getEntity(xPos, yPos)->getFoodCount() >= 8) {
+				if (map->getEntity(xPos, yPos)->getFoodCount() >= predator_reproduction_threshold) {
 					//Pruefen, ob Sichtweite die Spielfeldgroesse ueberschreitet
 					xMin = xPos - 1 < 0 ? 0 : xPos - 1;
 					xMax = map->getXSize() - 2 - xPos < 0 ? map->getXSize() - 1 : xPos + 1;
@@ -135,18 +204,18 @@ namespace sim {
 
 					//Nach freien Feldern fuer Nachwuchs suchen
 					Role targetRole;
-					for(int y = 0; y < yMax - yMin + 1; y++) {
-						for (int x = 0; x < xMax - xMin + 1; x++) {
+					for(int y = 0; y < yMax - yMin; y++) {
+						for (int x = 0; x < xMax - xMin; x++) {
 							targetRole = map->getEntity(x + xMin, y + yMin)->getRole();
-							score[x][y] = targetRole != prey && targetRole != predator ? 10 : -10;
+							score[x][y] = (targetRole != prey) && (targetRole != predator) ? 10 : (- 10);
 							highscore = highscore < score[x][y] ? score[x][y] : highscore;
 						}
 					}
 					//Nur vermehren, wenn freies Feld zur Verfuegung steht, sonst nichts machen und naechste Runde abwarten
 					if (highscore > 0) {
 						//Alle moeglichen Felder zusammenstellen und ein zufaelliges auswaehlen
-						for (int y = 0; y < yMax - yMin + 1; y++) {
-							for(int x = 0; x < xMax - xMin + 1; x++) {
+						for (int y = 0; y < yMax - yMin; y++) {
+							for(int x = 0; x < xMax - xMin; x++) {
 								if (score[x][y] == highscore)
 									choicePool.emplace_back(std::pair<int, int>({ x + xMin, y + yMin}));
 							}
@@ -157,7 +226,7 @@ namespace sim {
 						//Vermehren und Essen entsprechend setzen
 						map->setEntity(*map->getEntity(xPos, yPos), target.first, target.second);
 						map->getEntity(target.first, target.second)->setFoodCount(4);
-						map->getEntity(xPos, yPos)->starve(4);
+						map->getEntity(xPos, yPos)->starve(predator_reproduction_cost);
 					}
 				}
 				else {
@@ -198,7 +267,7 @@ namespace sim {
 						}
 					}
 					//Heimat Feld auf neutral setzen
-					score[yPos - yMin][xPos - xMin] = 0;
+					score[xPos - xMin][yPos - yMin] = 0;
 
 					//Dafuer sorgen, dass der Score-Vector nicht ueber- oder unterschritten wird
 					int xMinMove = xPos - xMin - movement < 0 ? 0 : xPos - xMin - movement;
@@ -226,15 +295,13 @@ namespace sim {
 						target = { xPos, yPos };
 					
 					//Schauen, ob Zielfeld dem aktuellen Feld entspricht
-					if (target.first =! xPos || target.second != yPos) {
+					if (((target.first != xPos) || (target.second != yPos))) {
 						//Auf entsprechendes Feld bewegen, eventuell essen
 						if (map->getEntity(target.first, target.second)->getRole() == prey) {
-							std::cout << "Laufe von [" << xPos << ", " << yPos << "] los und esse Prey auf Feld [" << target.first << ", " << target.second << "]\n";
 							map->getEntity(xPos, yPos)->eat(map->getEntity(target.first, target.second)->getFoodCount());
 							map->setPos(xPos, yPos, target.first, target.second);
 						}
 						else {
-							std::cout << "Predator bewegt sich von [" << xPos << ", " << yPos << "] auf Feld [" << target.first << ", " << target.second << "]\n";
 							map->setPos(xPos, yPos, target.first, target.second);
 							//Wenn das Entity auf dem Zielfeld z.B. eine Pflanze ist, wird sie geloescht
 							if (map->getEntity(xPos, yPos)->getRole() != null) {
@@ -243,22 +310,34 @@ namespace sim {
 						}
 					}
 				}
-#if 0
-				for (int y = 0; y < yMax - yMin + 1; y++) {
-					for (int x = 0; x < xMax - xMin + 1; x++) {
+				//Score Map ausgeben
+				if (print_console && print_console_score_map && !print_console_animation_create) {
+					std::cout << "Predator [" << xPos << "][" << yPos << "]\n";
+					for (int y = 0; y < score[0].size(); y++) {
+						for (int x = 0; x < score.size(); x++) {
+							std::cout << "+---";
+						}
+						std::cout << "+\n";
+						for (int x = 0; x < score.size(); x++) {
+							std::cout << "|" << std::setw(3) << score[x][y];
+						}
+						std::cout << "|\n";
+					}
+					for (int x = 0; x < score.size(); x++) {
 						std::cout << "+---";
 					}
 					std::cout << "+\n";
-					for (int x = 0; x < xMax - xMin + 1; x++) {
-						std::cout << "|" << std::setw(3) << score[x][y];
-					}
-					std::cout << "|\n";
 				}
-				for (int x = 0; x < xMax - xMin + 1; x++) {
-					std::cout << "+---";
+			}
+			//Map nach jeder einzelnen Bewegung ausgeben
+			if (print_console && (print_console_detailed_map || print_console_animation_create)) {
+				if(!print_console_score_map && !print_console_animation_create)
+					std::cout << "Predator [" << xPos << "][" << yPos << "]\n";
+				if (print_console_animation_create) {
+					std::this_thread::sleep_for(std::chrono::milliseconds(print_console_animation_pause_ms));
+					sim::clearConsole();
 				}
-				std::cout << "+\n";
-#endif
+				map->print();
 			}
 		}
 		//******************Prey********************************
@@ -266,8 +345,12 @@ namespace sim {
 			//Am Anfang jedes Zuges 1 Essen verlieren
 			map->getEntity(xPos, yPos)->starve();
 
-			//Predator toeten, sofern Essen <= 0 ist
+			//Prey toeten, sofern Essen <= 0 ist
 			if (map->getEntity(xPos, yPos)->getFoodCount() <= 0) {
+				map->setEntity(xPos, yPos);
+			}
+			//Prey toeten, sofern zu alt
+			else if (map->getEntity(xPos, yPos)->getAge() > prey_max_age) {
 				map->setEntity(xPos, yPos);
 			}
 			else {
@@ -284,7 +367,7 @@ namespace sim {
 				int yMin, yMax;
 
 				//Schauen, ob Prey genug Essen besitzt, um sich zu vermehren
-				if (map->getEntity(xPos, yPos)->getFoodCount() >= 8) {
+				if (map->getEntity(xPos, yPos)->getFoodCount() >= prey_reproduction_threshold) {
 					//Pruefen, ob Sichtweite die Spielfeldgroesse ueberschreitet
 					xMin = xPos - 1 < 0 ? 0 : xPos - 1;
 					xMax = map->getXSize() - 2 - xPos < 0 ? map->getXSize() - 1 : xPos + 1;
@@ -295,8 +378,8 @@ namespace sim {
 
 					//Nach freien Feldern fuer Nachwuchs suchen
 					Role targetRole;
-					for (int y = 0; y < yMax - yMin + 1; y++) {
-						for (int x = 0; x < xMax - xMin + 1; x++) {
+					for (int y = 0; y < yMax - yMin; y++) {
+						for (int x = 0; x < xMax - xMin; x++) {
 							targetRole = map->getEntity(x + xMin, y + yMin)->getRole();
 							score[x][y] = targetRole != prey && targetRole != predator ? 10 : -10;
 							highscore = highscore < score[x][y] ? score[x][y] : highscore;
@@ -305,8 +388,8 @@ namespace sim {
 					//Nur vermehren, wenn freies Feld zur Verfuegung steht, sonst nichts machen und naechste Runde abwarten
 					if (highscore > 0) {
 						//Alle moeglichen Felder zusammenstellen und ein zufaelliges auswaehlen
-						for (int y = 0; y < yMax - yMin + 1; y++) {
-							for (int x = 0; x < xMax - xMin + 1; x++) {
+						for (int y = 0; y < yMax - yMin; y++) {
+							for (int x = 0; x < xMax - xMin; x++) {
 								if (score[x][y] == highscore)
 									choicePool.emplace_back(std::pair<int, int>({ x + xMin, y + yMin }));
 							}
@@ -317,7 +400,7 @@ namespace sim {
 						//Vermehren und Essen entsprechend setzen
 						map->setEntity(*map->getEntity(xPos, yPos), target.first, target.second);
 						map->getEntity(target.first, target.second)->setFoodCount(4);
-						map->getEntity(xPos, yPos)->starve(4);
+						map->getEntity(xPos, yPos)->starve(prey_reproduction_cost);
 					}
 				}
 				else {
@@ -377,7 +460,7 @@ namespace sim {
 						}
 					}
 					//Heimat Feld auf neutral setzen
-					score[yPos - yMin][xPos - xMin] = 0;
+					score[xPos - xMin][yPos - yMin] = 0;
 
 					//Dafuer sorgen, dass der Score-Vector nicht ueber- oder unterschritten wird
 					int xMinMove = xPos - xMin - movement < 0 ? 0 : xPos - xMin - movement;
@@ -416,35 +499,45 @@ namespace sim {
 						}
 					}
 				}
-#if 0
-				for (int y = 0; y < yMax - yMin + 1; y++) {
-					for (int x = 0; x < xMax - xMin + 1; x++) {
+				//Score Map ausgeben
+				if (print_console && print_console_score_map && !print_console_animation_create) {
+					std::cout << "Prey [" << xPos << "][" << yPos << "]\n";
+					for (int y = 0; y < score[0].size(); y++) {
+						for (int x = 0; x < score.size(); x++) {
+							std::cout << "+---";
+						}
+						std::cout << "+\n";
+						for (int x = 0; x < score.size(); x++) {
+							std::cout << "|" << std::setw(3) << score[x][y];
+						}
+						std::cout << "|\n";
+					}
+					for (int x = 0; x < score.size(); x++) {
 						std::cout << "+---";
 					}
 					std::cout << "+\n";
-					for (int x = 0; x < xMax - xMin + 1; x++) {
-						std::cout << "|" << std::setw(3) << score[x][y];
-					}
-					std::cout << "|\n";
 				}
-				for (int x = 0; x < xMax - xMin + 1; x++) {
-					std::cout << "+---";
+			}
+			//Map nach jeder einzelnen Bewegung ausgeben
+			if (print_console && (print_console_detailed_map || print_console_animation_create)) {
+				if(!print_console_score_map && !print_console_animation_create)
+					std::cout << "Prey [" << xPos << "][" << yPos << "]\n";
+				if (print_console_animation_create) {
+					std::this_thread::sleep_for(std::chrono::milliseconds(print_console_animation_pause_ms));
+					sim::clearConsole();
 				}
-				std::cout << "+\n";
-#endif
+				map->print();
 			}
 		}
 	}
 
 	//Entity Tracker
 	void Simulation::clearEntityTracker() {
-		std::cout << entityTracker.size() << "\n";
 		for (int i = 0; i < entityTracker.size(); i++) {
 			if (entityTracker[i].expired()) {
 				entityTracker.erase(entityTracker.begin() + i);
 			}
 		}
-		std::cout << entityTracker.size() << "\n";
 	}
 	void Simulation::addToEntityTracker(int xPos, int yPos) {
 		entityTracker.emplace_back(std::weak_ptr<Entity>(map->getEntity(xPos, yPos)));

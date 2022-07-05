@@ -41,6 +41,8 @@ namespace sim {
 		void eat(Entity*);
 		void starve();
 		void starve(int);
+		void getOlder();
+		void getOlder(int);
 
 		//Virtual Functions
 		virtual std::shared_ptr<Vision> getVision() const { return vision; }
