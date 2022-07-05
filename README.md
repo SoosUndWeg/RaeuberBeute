@@ -60,16 +60,53 @@ static inline bool print_file_entity_count = false;
 ```
 Diese Option speichert die Anzahl der Entitys nach Rollen in der Datei ab. Sie ist nicht kompatibel mit den obigen zwei Einstellungen und wird durch diese automatisch deaktiviert.  
 
-
+**************************
+**Predator Einstellungen**
+Die nachfolgenden Einstellungen beziehen sich auf Entitys der Rolle *predator*.
+```c++
 static inline int predator_max_age = 12;
+```
+Legt das maximale Alter fest, das erreicht werden kann. Sobald das überschritten wird, stirbt das Entity der Rolle *predator*.
+```c++
 static inline int predator_reproduction_threshold = 8;
+```
+Legt den Schwellenwert an Nahrung fest, der erreicht werden muss, um sich fortzupflanzen.
+```c++
 static inline int predator_reproduction_cost = 4;
+```
+Legt die Menge an Nahrung fest, die das Muttertier durch die Reproduktion verliert. Dieser Wert sollte idealerweise niedriger sein als *predator_reproduction_threshold*, damit das Muttertier nicht direkt nach der Geburt stirbt.
+```c++
 static inline int predator_quantity = 0;
+```
+Legt die anfängliche Anzahl an Entitys der Rolle *predator* fest. Standartmäßig wird der Wert wird im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Raubtieren zu haben.  
 
+************************
+**Prey Einstellungen**
+Die nachfolgenden Einstellungen beziehen sich auf Entitys der Rolle *prey*.
+```c++
 static inline int prey_max_age = 12;
+```
+Legt das maximale Alter fest, das erreicht werden kann. Sobald das überschritten wird, stirbt das Entity der Rolle *prey*.
+```c++
 static inline int prey_reproduction_threshold = 8;
+```
+Legt den Schwellenwert an Nahrung fest, der erreicht werden muss, um sich fortzupflanzen.
+```c++
 static inline int prey_reproduction_cost = 4;
+```
+Legt die Menge an Nahrung fest, die das Muttertier durch die Reproduktion verliert. Dieser Wert sollte idealerweise niedriger sein als *prey_reproduction_threshold*, damit das Muttertier nicht direkt nach der Geburt stirbt.
+```c++
 static inline int prey_quantity = 0;
-
+```
+Legt die anfängliche Anzahl an Entitys der Rolle *prey* fest. Standartmäßig wird der Wert wird im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Beutetieren zu haben.  
+***********************
+**Plant Einstellungen**
+Die nachfolgenden Einstellungen beziehen sich auf Entitys der Rolle *plant*.
+```c++
 static inline int plant_quantity = 0;
+```
+Legt die anfängliche Anzahl an Entitys der Rolle *plant* fest. Standartmäßig wird der Wert wird im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt und mal zwei genommen, um auch bei großen Maps eine ausreichende Anzahl an Pflanzen zu haben.
+```c++
 static inline bool plants_respawn = true;
+```
+Aktiviert (true) oder deaktiviert (false) die Optrion, ob die anfängliche Anzahl an Pflanzen nach jedem Schritt wiederhergestellt werden soll. In anderen Worten, ob Pflanzen "nachwachsen" können.
