@@ -80,7 +80,7 @@ Legt die Menge an Nahrung fest, die das Muttertier durch die Reproduktion verlie
 ```c++
 static inline int predator_quantity = 0;
 ```
-Legt die anfängliche Anzahl an Entitys der Rolle *predator* fest. Standartmäßig wird der Wert wird im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Raubtieren zu haben.  
+Legt die anfängliche Anzahl an Entitys der Rolle *predator* fest. Standartmäßig wird der Wert im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Raubtieren zu haben.  
 
 ************************
 **Prey Einstellungen**
