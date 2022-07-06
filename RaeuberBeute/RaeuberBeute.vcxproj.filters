@@ -27,13 +27,7 @@
     <ClCompile Include="Simulation\Map.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\Tools\Timer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Simulation\Entity\Property.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Simulation\Entity\EntityLoader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Simulation\Core\Simulation.cpp">
@@ -77,13 +71,7 @@
     <ClInclude Include="Simulation\Map.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation\Tools\Timer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Simulation\Entity\Property.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation\Entity\EntityLoader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Core\Simulation.h">

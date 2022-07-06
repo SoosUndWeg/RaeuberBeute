@@ -57,29 +57,35 @@ namespace sim {
 	}
 
 	void Simulation::createDefaultMap() {
-		Predator Fuchs("Fuchs");
+		//Objekt "fuchs" vom Typ "predator" erstellen und Eigenschaften zuweisen
+		Predator fuchs("Fuchs");
 		Vision predatorVision;
 		predatorVision.setRange(predator_vision_range);
 		Movement predatorMovement;
 		predatorMovement.setRange(predator_movement_range);
-		Fuchs.setVision(predatorVision);
-		Fuchs.setAttack(Attack());
-		Fuchs.setMovement(predatorMovement);
+		fuchs.setVision(predatorVision);
+		fuchs.setAttack(Attack());
+		fuchs.setMovement(predatorMovement);
 
-		Prey Ente("Ente");
+		//Objekt "ente" vom Typ "prey" erstellen und Eigenschaften zuweisen
+		Prey ente("Ente");
 		Vision preyVision;
 		preyVision.setRange(prey_vision_range);
 		Movement preyMovement;
 		preyMovement.setRange(prey_movement_range);
-		Ente.setMovement(preyMovement);
-		Ente.setVision(Vision());
+		ente.setMovement(preyMovement);
+		ente.setVision(Vision());
 
-		Plant Grass("Grass");
+		//Objekt "grass" vom Typ "plant" erstellen und Eigenschaften zuweisen
+		Plant grass("Grass");
+		grass.setFoodCount(plant_food_count);
 
-		map->spawn(Fuchs, predator_quantity);
-		map->spawn(Ente, prey_quantity);
-		map->spawn(Grass, plant_quantity);
+		//Entities spawnen
+		map->spawn(fuchs, predator_quantity);
+		map->spawn(ente, prey_quantity);
+		map->spawn(grass, plant_quantity);
 
+		//Alle Entities dem Tracker hinzufuegen
 		updateEntityTracker();
 		//printStep();
 		
@@ -194,8 +200,11 @@ namespace sim {
 		}
 
 		//Pflanzen nachwachsen lassen, sofern es aktiviert ist
-		if (plants_respawn)
-			map->spawn(Plant(), plant_quantity - getRoleCount(plant));
+		if (plants_respawn) {
+			Plant plant;
+			plant.setFoodCount(plant_food_count);
+			map->spawn(plant, plant_quantity - getRoleCount(sim::plant));
+		}
 
 		//Nach ausgewaehlten Optionen in Datei oder Konsole ausgeben
 		printStep();

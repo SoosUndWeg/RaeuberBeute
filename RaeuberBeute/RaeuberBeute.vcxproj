@@ -153,14 +153,12 @@
     <ClCompile Include="Simulation\Entity\Entities\Predator.cpp" />
     <ClCompile Include="Simulation\Entity\Entities\Prey.cpp" />
     <ClCompile Include="Simulation\Entity\Entity.cpp" />
-    <ClCompile Include="Simulation\Entity\EntityLoader.cpp" />
     <ClCompile Include="Simulation\Entity\Properties\Attack.cpp" />
     <ClCompile Include="Simulation\Entity\Properties\Environment.cpp" />
     <ClCompile Include="Simulation\Entity\Properties\Movement.cpp" />
     <ClCompile Include="Simulation\Entity\Properties\Vision.cpp" />
     <ClCompile Include="Simulation\Entity\Property.cpp" />
     <ClCompile Include="Simulation\Map.cpp" />
-    <ClCompile Include="Simulation\Tools\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Simulation\Tools\Random.h" />
@@ -170,14 +168,12 @@
     <ClInclude Include="Simulation\Entity\Entities\Predator.h" />
     <ClInclude Include="Simulation\Entity\Entities\Prey.h" />
     <ClInclude Include="Simulation\Entity\Entity.h" />
-    <ClInclude Include="Simulation\Entity\EntityLoader.h" />
     <ClInclude Include="Simulation\Entity\Properties\Attack.h" />
     <ClInclude Include="Simulation\Entity\Properties\Environment.h" />
     <ClInclude Include="Simulation\Entity\Properties\Movement.h" />
     <ClInclude Include="Simulation\Entity\Properties\Vision.h" />
     <ClInclude Include="Simulation\Entity\Property.h" />
     <ClInclude Include="Simulation\Map.h" />
-    <ClInclude Include="Simulation\Tools\Timer.h" />
     <ClInclude Include="Simulation\Tools\Tools.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

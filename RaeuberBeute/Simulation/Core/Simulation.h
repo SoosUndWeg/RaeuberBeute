@@ -60,6 +60,7 @@ namespace sim {
 
 		static inline int plant_quantity = 0;
 		static inline bool plants_respawn = true;
+		static inline int plant_food_count = 4;
 	private:
 		Map* map;
 
