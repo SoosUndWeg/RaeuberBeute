@@ -445,6 +445,7 @@ namespace sim {
 						if (map->getEntity(target.first, target.second)->getRole() == prey) {
 							map->getEntity(xPos, yPos)->eat(map->getEntity(target.first, target.second)->getFoodCount());
 							map->setPos(xPos, yPos, target.first, target.second);
+							map->setEntity(xPos, yPos);
 						}
 						else {
 							map->setPos(xPos, yPos, target.first, target.second);
@@ -656,11 +657,12 @@ namespace sim {
 						target = { xPos, yPos };
 
 					//Schauen, ob Zielfeld dem aktuellen Feld entspricht
-					if (target.first = !xPos || target.second != yPos) {
+					if (((target.first != xPos) || (target.second != yPos))) {
 						//Auf entsprechendes Feld bewegen, eventuell essen
 						if (map->getEntity(target.first, target.second)->getRole() == plant) {
 							map->getEntity(xPos, yPos)->eat(map->getEntity(target.first, target.second)->getFoodCount());
 							map->setPos(xPos, yPos, target.first, target.second);
+							map->setEntity(xPos, yPos);
 						}
 						else {
 							map->setPos(xPos, yPos, target.first, target.second);

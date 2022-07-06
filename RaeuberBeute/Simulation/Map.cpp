@@ -12,9 +12,9 @@ namespace sim {
 	Map::Map(int Size) : xSize{ Size }, ySize{ Size }{
 		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
 		for (int x = 0; x < xSize; x++) {
-			blueprint += "+---";
+			lineBlueprint += "+---";
 		}
-		blueprint += "+\n";
+		lineBlueprint += "+\n";
 
 		map.resize(Size, std::vector<std::shared_ptr<Entity>>(Size, nullptr));
 		fill();
@@ -23,9 +23,9 @@ namespace sim {
 	Map::Map(int xSize, int ySize) : xSize{ xSize }, ySize{ ySize }{
 		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
 		for (int x = 0; x < xSize; x++) {
-			blueprint += "+---";
+			lineBlueprint += "+---";
 		}
-		blueprint += "+\n";
+		lineBlueprint += "+\n";
 		map.resize(xSize, std::vector<std::shared_ptr<Entity>>(ySize, nullptr));
 		fill();
 		updateAll();
@@ -69,6 +69,33 @@ namespace sim {
 	//sonstiges
 	void Map::print() {
 		Role role;
+		mapBlueprint = "";
+		for (int x = 0; x < xSize; x++) {
+			mapBlueprint += "+---";
+		}
+		mapBlueprint += "+-> X\n";
+		for (int y = 0; y < ySize; y++) {
+			for (int x = 0; x < xSize; x++) {
+				role = map[x][y]->getRole();
+				if (role == predator) {
+					mapBlueprint += "| # ";
+				}
+				else if (role == prey) {
+					mapBlueprint += "| x ";
+				}
+				else if (role == plant) {
+					mapBlueprint += "| * ";
+				}
+				else {
+					mapBlueprint += "|   ";
+				}
+			}
+			mapBlueprint += ("|\n" + lineBlueprint);
+		}
+		mapBlueprint += "|\nV\nY";
+		std::cout << mapBlueprint << std::endl;
+#if 0
+		Role role;
 		for (int x = 0; x < xSize; x++) {
 			std::cout << "+---";
 		}
@@ -89,9 +116,10 @@ namespace sim {
 					std::cout << "|   ";
 				}
 			}
-			std::cout << "|\n" << blueprint;
+			std::cout << "|\n" << lineBlueprint;
 		}
 		std::cout << "|\nV\nY" << std::endl;
+#endif
 	}
 	void Map::setEntity(int xPos, int yPos) {
 		map[xPos][yPos] = std::make_shared<Entity>(Entity());

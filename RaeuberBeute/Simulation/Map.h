@@ -38,7 +38,8 @@ namespace sim {
 	private:
 		std::vector<std::vector<std::shared_ptr<Entity>>> map;
 
-		std::string blueprint = "";
+		std::string lineBlueprint = "";
+		std::string mapBlueprint = "";
 
 		//Entity* nullEntity;
 
