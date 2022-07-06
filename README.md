@@ -80,7 +80,15 @@ Legt die Menge an Nahrung fest, die das Muttertier durch die Reproduktion verlie
 ```c++
 static inline int predator_quantity = 0;
 ```
-Legt die anfängliche Anzahl an Entitys der Rolle *predator* fest. Standartmäßig wird der Wert im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Raubtieren zu haben.  
+Legt die anfängliche Anzahl an Entitys der Rolle *predator* fest. Standartmäßig wird der Wert im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Raubtieren zu haben.
+```c++
+static inline int predator_vision_range = 1;
+```
+Legt den Unkreis fest, in dem das Raubtier seine Umgebung analysieren und bewerten kann.
+```c++
+static inline int predator_movement_range = 1;
+```
+Legt die Anzahl an Feldern fest, die sich das Raubtier bewegen kann. Unabhängig von dem eingestellten Wert wird das Tier sich stets nur so weit bewegen, wie es auch sehen kann. Somit ist der effektive Wert stets kleiner gleich *predator_vision_range*.  
 
 ************************
 **Prey Einstellungen**
@@ -101,7 +109,16 @@ Legt die Menge an Nahrung fest, die das Muttertier durch die Reproduktion verlie
 ```c++
 static inline int prey_quantity = 0;
 ```
-Legt die anfängliche Anzahl an Entitys der Rolle *prey* fest. Standartmäßig wird der Wert wird im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Beutetieren zu haben.  
+Legt die anfängliche Anzahl an Entitys der Rolle *prey* fest. Standartmäßig wird der Wert wird im Konstruktor des Structs *sim::Simulation* auf die längste Seitenlänge der Map gesetzt, um auch bei großen Maps eine ausreichende Anzahl an Beutetieren zu haben.
+```c++
+static inline int prey_vision_range = 1;
+```
+Legt den Unkreis fest, in dem das Beutetier seine Umgebung analysieren und bewerten kann.
+```c++
+static inline int prey_movement_range = 1;
+```
+Legt die Anzahl an Feldern fest, die sich das Beutetier bewegen kann. Unabhängig von dem eingestellten Wert wird das Tier sich stets nur so weit bewegen, wie es auch sehen kann. Somit ist der effektive Wert stets kleiner gleich *prey_vision_range*.  
+
 ***********************
 **Plant Einstellungen**
 
