@@ -26,6 +26,8 @@ namespace sim {
 
 		int getRoleCount(Role) const;
 
+		void printStep();
+
 		//Einstellungen
 		static inline bool print_console = true;
 		static inline bool print_console_map = false;
@@ -46,11 +48,15 @@ namespace sim {
 		static inline int predator_reproduction_threshold = 8;
 		static inline int predator_reproduction_cost = 4;
 		static inline int predator_quantity = 0;
+		static inline int predator_vision_range = 1;
+		static inline int predator_movement_range = 1;
 
 		static inline int prey_max_age = 12;
 		static inline int prey_reproduction_threshold = 8;
 		static inline int prey_reproduction_cost = 4;
 		static inline int prey_quantity = 0;
+		static inline int prey_vision_range = 1;
+		static inline int prey_movement_range = 1;
 
 		static inline int plant_quantity = 0;
 		static inline bool plants_respawn = true;
@@ -63,7 +69,6 @@ namespace sim {
 
 		static inline bool print_file = true;
 
-		int plantSetpoint = 0;
 		int steps = 0;
 
 		const int mapXSize;

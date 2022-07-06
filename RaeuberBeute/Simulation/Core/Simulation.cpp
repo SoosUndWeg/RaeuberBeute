@@ -20,7 +20,7 @@ namespace sim {
 		if (!fileStream.is_open())
 			print_file = false;
 
-		//Standart Anzahl fuer Entitys setzten, abhängig von der Mapgroesse (von der Laengsten Seite)
+		//Standart Anzahl fuer Entitys setzten, abhaengig von der Mapgroesse (von der laengsten Seite)
 		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
 		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
 		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
@@ -32,7 +32,7 @@ namespace sim {
 		if (!fileStream.is_open())
 			print_file = false;
 
-		//Standart Anzahl fuer Entitys setzten, abhängig von der Mapgroesse (von der Laengsten Seite)
+		//Standart Anzahl fuer Entitys setzten, abhaengig von der Mapgroesse (von der laengsten Seite)
 		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
 		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
 		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
@@ -58,12 +58,20 @@ namespace sim {
 
 	void Simulation::createDefaultMap() {
 		Predator Fuchs("Fuchs");
-		Fuchs.setVision(Vision());
+		Vision predatorVision;
+		predatorVision.setRange(predator_vision_range);
+		Movement predatorMovement;
+		predatorMovement.setRange(predator_movement_range);
+		Fuchs.setVision(predatorVision);
 		Fuchs.setAttack(Attack());
-		Fuchs.setMovement(Movement());
+		Fuchs.setMovement(predatorMovement);
 
 		Prey Ente("Ente");
-		Ente.setMovement(Movement());
+		Vision preyVision;
+		preyVision.setRange(prey_vision_range);
+		Movement preyMovement;
+		preyMovement.setRange(prey_movement_range);
+		Ente.setMovement(preyMovement);
 		Ente.setVision(Vision());
 
 		Plant Grass("Grass");
@@ -73,8 +81,8 @@ namespace sim {
 		map->spawn(Grass, plant_quantity);
 
 		updateEntityTracker();
-		plantSetpoint = getRoleCount(plant);
-
+		//printStep();
+		
 		//Sofern Ausgabe in Konsole aktiviert wurde, entsprechende Option ausfuehren
 		if (print_console && print_console_entity_count && !print_console_animation_create) {
 			std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
@@ -172,72 +180,8 @@ namespace sim {
 		map->setEntity(Grass, 4, 4);
 
 		updateEntityTracker();
-		plantSetpoint = getRoleCount(plant);
 
-		//Sofern Ausgabe in Konsole aktiviert wurde, entsprechende Option ausfuehren
-		if (print_console && print_console_entity_count && print_console_animation_create) {
-			std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
-			std::cout << "Prey    :" << getRoleCount(prey) << "\n";
-			std::cout << "Plant   :" << getRoleCount(plant) << "\n\n";
-		}
-		if (print_console && (print_console_animation_create || print_console_detailed_map))
-			map->print();
-		//Sofern Ausgabe in Datei aktiviert wurde, entsprechende Option ausfuehren
-		if (print_file) {
-			if (print_file_positions_detailed) {}
-			else if (print_file_positions_detailed_compressed) {}
-			else if (print_file_entity_count) {
-				fileStream << steps << " ";
-				fileStream << predator << " " << getRoleCount(predator) << " ";
-				fileStream << prey << " " << getRoleCount(prey) << " ";
-				fileStream << plant << " " << getRoleCount(plant) << " ";
-				fileStream << null << " " << getRoleCount(null) << " ";
-				if (!print_file_positions && !print_file_positions_compressed && !print_file_positions_detailed)
-					fileStream << "\n";
-			}
-			//Vollstaendige Map in Datei schreiben
-			if (print_file_positions_detailed) {
-				fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-			//Position aller Entitys, die nicht null sind, in Datei schreiben
-			else if (print_file_positions_detailed_compressed) {
-				fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						if (map->getEntity(x, y)->getRole() != null)
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-			else if (print_file_positions_compressed) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						if (map->getEntity(x, y)->getRole() != null)
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-			else if (print_file_positions) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-		}
+		printStep();
 	}
 
 	//Schritt in der Simulation machen
@@ -249,56 +193,15 @@ namespace sim {
 			}
 		}
 
+		//Pflanzen nachwachsen lassen, sofern es aktiviert ist
 		if (plants_respawn)
-			map->spawn(Plant(), plantSetpoint - getRoleCount(plant));
-		
-		//Je nach Einstellungen in Konsole und/oder in Datei ausgeben
-		if (print_console) {
-			if (print_console_map && !print_console_detailed_map && !print_console_animation_create)
-				map->print();
-			if (print_console_entity_count && !print_console_animation_create) {
-				std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
-				std::cout << "Prey    :" << getRoleCount(prey) << "\n";
-				std::cout << "Plant   :" << getRoleCount(plant) << "\n\n";
-			}
-		}
-		if (print_file) {
-			if (print_file_positions_detailed) {}
-			else if (print_file_positions_detailed_compressed) {}
-			else if (print_file_entity_count) {
-				fileStream << steps << " ";
-				fileStream << predator << " " << getRoleCount(predator) << " ";
-				fileStream << prey << " " << getRoleCount(prey) << " ";
-				fileStream << plant << " " << getRoleCount(plant) << " ";
-				fileStream << null << " " << getRoleCount(null) << " ";
-				if (!print_file_positions && !print_file_positions_compressed && !print_file_positions_detailed)
-					fileStream << "\n";
-			}
-			if (print_file_positions_detailed) {}
-			else if (print_file_positions_detailed_compressed) {}
-			else if (print_file_positions_compressed) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						if (map->getEntity(x, y)->getRole() != null)
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-			else if (print_file_positions) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-		}
+			map->spawn(Plant(), plant_quantity - getRoleCount(plant));
+
+		//Nach ausgewaehlten Optionen in Datei oder Konsole ausgeben
+		printStep();
+		//Liste mit weak_ptr, die auf Entitys zeigen, updaten
 		updateEntityTracker();
+		//Schrittzaehler eins hochsetzen
 		steps++;
 	}
 	void Simulation::run(int steps) {
@@ -754,5 +657,54 @@ namespace sim {
 					counter++;
 		}
 		return counter;
+	}
+
+	//Ausgabe in Datei oder Konsole abhaengig von den Einstellungen
+	void Simulation::printStep() {
+		if (print_console) {
+			if (print_console_map && !print_console_detailed_map && !print_console_animation_create)
+				map->print();
+			if (print_console_entity_count && !print_console_animation_create) {
+				std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
+				std::cout << "Prey    :" << getRoleCount(prey) << "\n";
+				std::cout << "Plant   :" << getRoleCount(plant) << "\n\n";
+			}
+		}
+		if (print_file) {
+			if (print_file_positions_detailed) {}
+			else if (print_file_positions_detailed_compressed) {}
+			else if (print_file_entity_count) {
+				fileStream << steps << " ";
+				fileStream << predator << " " << getRoleCount(predator) << " ";
+				fileStream << prey << " " << getRoleCount(prey) << " ";
+				fileStream << plant << " " << getRoleCount(plant) << " ";
+				fileStream << null << " " << getRoleCount(null) << " ";
+				if (!print_file_positions && !print_file_positions_compressed && !print_file_positions_detailed)
+					fileStream << "\n";
+			}
+			if (print_file_positions_detailed) {}
+			else if (print_file_positions_detailed_compressed) {}
+			else if (print_file_positions_compressed) {
+				if (!print_file_entity_count)
+					fileStream << steps << " ";
+				for (int y = 0; y < mapYSize; y++) {
+					for (int x = 0; x < mapXSize; x++) {
+						if (map->getEntity(x, y)->getRole() != null)
+							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+					}
+				}
+				fileStream << "\n";
+			}
+			else if (print_file_positions) {
+				if (!print_file_entity_count)
+					fileStream << steps << " ";
+				for (int y = 0; y < mapYSize; y++) {
+					for (int x = 0; x < mapXSize; x++) {
+						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+					}
+				}
+				fileStream << "\n";
+			}
+		}
 	}
 }
