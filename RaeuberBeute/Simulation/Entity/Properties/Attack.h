@@ -1,12 +1,14 @@
 #pragma once
 
 #include "../Property.h"
-#include <vector>
 
 namespace sim {
 	class Attack : public Property {
 	public:
-		using Property::Property;
+		Attack();
+		Attack(const char*);
+		Attack(std::string);
+
 		void setRange(int);
 
 		int getRange();

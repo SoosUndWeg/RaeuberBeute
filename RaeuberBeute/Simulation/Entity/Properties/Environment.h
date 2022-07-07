@@ -5,7 +5,9 @@
 namespace sim {
 	class Environment : public Property {
 	public:
-		using Property::Property;
+		Environment();
+		Environment(const char*);
+		Environment(std::string);
 
 		void blockMovement(bool);
 		void blockVision(bool);

@@ -20,13 +20,12 @@ namespace sim {
 		void run(int);
 		void moveEntity(int, int);
 
-		void clearEntityTracker();
-		void addToEntityTracker(int, int);
-		void updateEntityTracker();
-
 		int getRoleCount(Role) const;
 
 		void printStep();
+
+		void loadSimulationSettings();
+		void loadSimulationSettings(const char*);
 
 		//Einstellungen
 		static inline bool print_console = true;
@@ -62,6 +61,12 @@ namespace sim {
 		static inline bool plants_respawn = true;
 		static inline int plant_food_count = 4;
 	private:
+		//Private Funktionen
+		void clearEntityTracker();
+		void addToEntityTracker(int, int);
+		void updateEntityTracker();
+
+		//Member-Variablen
 		Map* map;
 
 		std::ofstream fileStream;

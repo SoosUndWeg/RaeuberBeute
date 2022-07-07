@@ -3,7 +3,6 @@
 #include <string>
 #include <memory>
 
-#include "Property.h"
 #include "Properties/Vision.h"
 #include "Properties/Movement.h"
 #include "Properties/Attack.h"

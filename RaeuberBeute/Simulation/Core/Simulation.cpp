@@ -1,4 +1,5 @@
 #include "Simulation.h"
+
 #include "../Entity/Entities/Predator.h"
 #include "../Entity/Entities/Prey.h"
 #include "../Entity/Entities/Plant.h"
@@ -10,6 +11,8 @@
 #include <tuple>
 #include <chrono>
 #include <thread>
+#include <fstream>
+#include <sstream>
 
 namespace sim {
 	//Konstruktor
@@ -714,6 +717,187 @@ namespace sim {
 				}
 				fileStream << "\n";
 			}
+		}
+	}
+
+	//Einstellungen laden
+	void Simulation::loadSimulationSettings() {
+		loadSimulationSettings("./Settings/simulationSettings.txt");
+	}
+	//Einstellungen laden
+	void Simulation::loadSimulationSettings(const char* fileName) {
+		std::ifstream fileStream(fileName);
+		std::string input;
+
+		if (fileStream.is_open()) {
+			std::cout << "Lade Einstellungen...\n\n";
+
+			//print_console
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_console;
+
+			//print_console_map
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_console_map;
+
+			//print_console_detailed_map
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_console_detailed_map;
+
+			//print_console_score_map
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_console_score_map;
+
+			//print_console_entity_count
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_console_entity_count;
+
+			//print_console_animation_create
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_console_animation_create;
+
+			//print_console_animation_pause_ms
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_console_animation_pause_ms;
+
+			//print_file_positions
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_file_positions;
+
+			//print_file_positions_compressed
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_file_positions_compressed;
+
+			//print_file_positions_detailed_compressed
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_file_positions_detailed_compressed;
+
+			//print_file_positions_detailed
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_file_positions_detailed;
+
+			//print_file_entity_count
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::print_file_entity_count;
+
+			//predator_max_age
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::predator_max_age;
+
+			//predator_reproduction_threshold
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::predator_reproduction_threshold;
+
+			//predator_reproduction_cost
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::predator_reproduction_cost;
+
+			//predator_quantity
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::predator_quantity;
+
+			//predator_vision_range
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::predator_vision_range;
+
+			//predator_movement_range
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::predator_movement_range;
+
+			//prey_max_age
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::prey_max_age;
+
+			//prey_reproduction_threshold
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::prey_reproduction_threshold;
+
+			//prey_reproduction_cost
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::prey_reproduction_cost;
+
+			//prey_quantity
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::prey_quantity;
+
+			//prey_vision_range
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::prey_vision_range;
+
+			//prey_movement_range
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::prey_movement_range;
+
+			//plant_quantity
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::plant_quantity;
+
+			//plants_respawn
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::plants_respawn;
+
+			//plant_food_count
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::plant_food_count;
+
+			clearConsole();
+		}
+		else {
+			std::cout << "Datei \"simulationSettings.txt\" konnte nicht geoeffnet werden\n";
 		}
 	}
 }

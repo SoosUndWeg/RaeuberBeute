@@ -1,8 +1,5 @@
-//TODO Operator overload
-//TODO Performance testing of sim::Random double call
-//TODO Umsteigen auf shared_ptr, in Simulation.cpp ueber weak_ptr dann tracken
-
 #include "Map.h"
+
 #include "Tools/Random.h"
 
 #include <iostream>
@@ -94,32 +91,6 @@ namespace sim {
 		}
 		mapBlueprint += "|\nV\nY";
 		std::cout << mapBlueprint << std::endl;
-#if 0
-		Role role;
-		for (int x = 0; x < xSize; x++) {
-			std::cout << "+---";
-		}
-		std::cout << "+-> X\n";
-		for (int y = 0; y < ySize; y++) {
-			for (int x = 0; x < xSize; x++) {
-				role = map[x][y]->getRole();
-				if (role == predator) {
-					std::cout << "| # ";
-				}
-				else if (role == prey) {
-					std::cout << "| x ";
-				}
-				else if (role == plant) {
-					std::cout << "| * ";
-				}
-				else {
-					std::cout << "|   ";
-				}
-			}
-			std::cout << "|\n" << lineBlueprint;
-		}
-		std::cout << "|\nV\nY" << std::endl;
-#endif
 	}
 	void Map::setEntity(int xPos, int yPos) {
 		map[xPos][yPos] = std::make_shared<Entity>(Entity());

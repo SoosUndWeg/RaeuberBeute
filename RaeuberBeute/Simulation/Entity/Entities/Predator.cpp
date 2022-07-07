@@ -1,5 +1,4 @@
 #include "Predator.h"
-#include <iostream>
 
 namespace sim {
 	Predator::Predator() : Entity{ predator, "Predator" } {}

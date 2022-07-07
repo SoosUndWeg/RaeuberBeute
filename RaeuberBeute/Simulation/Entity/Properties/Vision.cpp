@@ -1,7 +1,10 @@
 #include "Vision.h"
-#include <iostream>
 
 namespace sim {
+	Vision::Vision() : Property{ "Vision" } {}
+	Vision::Vision(const char* name) : Property{ name } {}
+	Vision::Vision(std::string name) : Property{ name } {}
+
 	void Vision::setRange(int range) {
 		this->range = range;
 	}

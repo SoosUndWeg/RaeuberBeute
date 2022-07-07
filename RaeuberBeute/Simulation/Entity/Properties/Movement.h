@@ -6,6 +6,9 @@ namespace sim {
 	class Movement : public Property {
 	public:
 		using Property::Property;
+		Movement();
+		Movement(const char*);
+		Movement(std::string);
 
 		void setRange(int);
 		void setBlockable(bool);

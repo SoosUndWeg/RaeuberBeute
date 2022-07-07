@@ -1,7 +1,6 @@
 #pragma once
 
 #include <random>
-#include <ctime>
 
 namespace sim {
 	static bool usedSeed = false;

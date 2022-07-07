@@ -1,14 +1,17 @@
 #pragma once
 
+#include <string>
+
 namespace sim {
 
 	class Property {
 	public:
 		Property();
 		Property(const char*);
+		Property(std::string);
 
-		const char* getName();
+		std::string getName() const;
 	protected:
-		const char* name;
+		const std::string name;
 	};
 }

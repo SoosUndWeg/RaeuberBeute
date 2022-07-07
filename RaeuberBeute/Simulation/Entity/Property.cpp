@@ -1,11 +1,11 @@
 #include "Property.h"
-#include <vector>
 
 namespace sim {
 	Property::Property() : name{ "unknown" } {}
 	Property::Property(const char* name) : name{ name } {}
+	Property::Property(std::string name) : name{ name } {}
 
-	const char* Property::getName() {
+	std::string Property::getName() const {
 		return this->name;
 	}
 }

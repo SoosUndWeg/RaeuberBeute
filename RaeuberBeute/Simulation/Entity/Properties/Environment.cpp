@@ -1,6 +1,10 @@
 #include "Environment.h"
 
 namespace sim {
+	Environment::Environment() :Property{ "Environment" } {}
+	Environment::Environment(const char* name) :Property{ name } {}
+	Environment::Environment(std::string name) :Property{ name } {}
+
 	void Environment::blockMovement(bool blockingMovement) {
 		this->blockingMovement = blockingMovement;
 	}

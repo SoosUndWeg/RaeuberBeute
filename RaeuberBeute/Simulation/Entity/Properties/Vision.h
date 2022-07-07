@@ -5,7 +5,9 @@
 namespace sim {
 	class Vision : public Property {
 	public:
-		using Property::Property;
+		Vision();
+		Vision(const char*);
+		Vision(std::string);
 
 		void setRange(int);
 		void setBlockable(bool);

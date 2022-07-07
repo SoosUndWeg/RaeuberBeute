@@ -1,5 +1,4 @@
 #include "Prey.h"
-#include <iostream>
 
 namespace sim {
 	Prey::Prey() : Entity{ prey, "Prey" } {}
