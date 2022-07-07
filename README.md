@@ -131,3 +131,7 @@ Legt die anfängliche Anzahl an Entitys der Rolle *plant* fest. Standartmäßig 
 static inline bool plants_respawn = true;
 ```
 Aktiviert (true) oder deaktiviert (false) die Option, ob die anfängliche Anzahl an Pflanzen nach jedem Schritt wiederhergestellt werden soll. In anderen Worten, ob Pflanzen "nachwachsen" können.
+```c++
+static inline int plant_food_count = 4;
+```
+Legt fest, welchen Nährwert eine Pflanze besitzt.
