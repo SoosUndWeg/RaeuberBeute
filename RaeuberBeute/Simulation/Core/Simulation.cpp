@@ -77,7 +77,7 @@ namespace sim {
 		Movement preyMovement;
 		preyMovement.setRange(prey_movement_range);
 		ente.setMovement(preyMovement);
-		ente.setVision(Vision());
+		ente.setVision(preyVision);
 
 		//Objekt "grass" vom Typ "plant" erstellen und Eigenschaften zuweisen
 		Plant grass("Grass");
@@ -202,7 +202,6 @@ namespace sim {
 			}
 		}
 
-		//Pflanzen nachwachsen lassen, sofern es aktiviert ist
 		if (plants_respawn) {
 			Plant plant;
 			plant.setFoodCount(plant_food_count);
@@ -260,12 +259,12 @@ namespace sim {
 					yMin = yPos - 1 < 0 ? 0 : yPos - 1;
 					yMax = map->getYSize() - 2 - yPos < 0 ? map->getYSize() - 1 : yPos + 1;
 
-					score.resize(xMax - xMin, std::vector<int>(yMax - yMin));
+					score.resize(xMax - xMin + 1, std::vector<int>(yMax - yMin + 1));
 
 					//Nach freien Feldern fuer Nachwuchs suchen
 					Role targetRole;
-					for(int y = 0; y < yMax - yMin; y++) {
-						for (int x = 0; x < xMax - xMin; x++) {
+					for(int y = 0; y < yMax - yMin + 1; y++) {
+						for (int x = 0; x < xMax - xMin + 1; x++) {
 							targetRole = map->getEntity(x + xMin, y + yMin)->getRole();
 							score[x][y] = (targetRole != prey) && (targetRole != predator) ? 10 : (- 10);
 							highscore = highscore < score[x][y] ? score[x][y] : highscore;
@@ -274,8 +273,8 @@ namespace sim {
 					//Nur vermehren, wenn freies Feld zur Verfuegung steht, sonst nichts machen und naechste Runde abwarten
 					if (highscore > 0) {
 						//Alle moeglichen Felder zusammenstellen und ein zufaelliges auswaehlen
-						for (int y = 0; y < yMax - yMin; y++) {
-							for(int x = 0; x < xMax - xMin; x++) {
+						for (int y = 0; y < yMax - yMin + 1; y++) {
+							for(int x = 0; x < xMax - xMin + 1; x++) {
 								if (score[x][y] == highscore)
 									choicePool.emplace_back(std::pair<int, int>({ x + xMin, y + yMin}));
 							}
@@ -458,22 +457,22 @@ namespace sim {
 					yMin = yPos - 1 < 0 ? 0 : yPos - 1;
 					yMax = map->getYSize() - 2 - yPos < 0 ? map->getYSize() - 1 : yPos + 1;
 
-					score.resize(xMax - xMin, std::vector<int>(yMax - yMin));
+					score.resize(xMax - xMin + 1, std::vector<int>(yMax - yMin + 1));
 
 					//Nach freien Feldern fuer Nachwuchs suchen
 					Role targetRole;
-					for (int y = 0; y < yMax - yMin; y++) {
-						for (int x = 0; x < xMax - xMin; x++) {
+					for (int y = 0; y < yMax - yMin + 1; y++) {
+						for (int x = 0; x < xMax - xMin + 1; x++) {
 							targetRole = map->getEntity(x + xMin, y + yMin)->getRole();
-							score[x][y] = targetRole != prey && targetRole != predator ? 10 : -10;
+							score[x][y] = (targetRole != prey) && (targetRole != predator) ? 10 : -10;
 							highscore = highscore < score[x][y] ? score[x][y] : highscore;
 						}
 					}
 					//Nur vermehren, wenn freies Feld zur Verfuegung steht, sonst nichts machen und naechste Runde abwarten
 					if (highscore > 0) {
 						//Alle moeglichen Felder zusammenstellen und ein zufaelliges auswaehlen
-						for (int y = 0; y < yMax - yMin; y++) {
-							for (int x = 0; x < xMax - xMin; x++) {
+						for (int y = 0; y < yMax - yMin + 1; y++) {
+							for (int x = 0; x < xMax - xMin + 1; x++) {
 								if (score[x][y] == highscore)
 									choicePool.emplace_back(std::pair<int, int>({ x + xMin, y + yMin }));
 							}
@@ -522,21 +521,21 @@ namespace sim {
 							else if (map->getEntity(x + xMin, y + yMin)->getRole() == predator) {
 								score[x][y] -= 10;
 								if (x > 0)
-									score[x - 1][y] -= 2;
+									score[x - 1][y] -= 5;
 								if (x > 0 && y > 0)
-									score[x - 1][y - 1] -= 2;
+									score[x - 1][y - 1] -= 5;
 								if (y > 0)
-									score[x][y - 1] -= 2;
+									score[x][y - 1] -= 5;
 								if (y > 0 && x < xMax - xMin)
-									score[x + 1][y - 1] -= 2;
+									score[x + 1][y - 1] -= 5;
 								if (x < xMax - xMin)
-									score[x + 1][y] -= 2;
+									score[x + 1][y] -= 5;
 								if (x < xMax - xMin && y < yMax - yMin)
-									score[x + 1][y + 1] -= 2;
+									score[x + 1][y + 1] -= 5;
 								if (y < yMax - yMin)
-									score[x][y + 1] -= 2;
+									score[x][y + 1] -= 5;
 								if (x > 0 && y < yMax - yMin)
-									score[x - 1][y + 1] -= 2;
+									score[x - 1][y + 1] -= 5;
 							}
 							else if (map->getEntity(x + xMin, y + yMin)->getRole() == prey) {
 								score[x][y] = -10;
@@ -869,6 +868,7 @@ namespace sim {
 			std::cout << input << "\n";
 			std::getline(fileStream, input);
 			std::istringstream(input) >> Simulation::prey_vision_range;
+			std::cout << "Hier ist die prey_vision_range" << Simulation::prey_vision_range << "\n";
 
 			//prey_movement_range
 			std::getline(fileStream, input);
@@ -894,7 +894,7 @@ namespace sim {
 			std::getline(fileStream, input);
 			std::istringstream(input) >> Simulation::plant_food_count;
 
-			clearConsole();
+			//clearConsole();
 		}
 		else {
 			std::cout << "Datei \"simulationSettings.txt\" konnte nicht geoeffnet werden\n";

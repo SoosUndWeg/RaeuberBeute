@@ -13,6 +13,6 @@ namespace sim {
 		Simulation simulation(10, 10);
 		simulation.loadSimulationSettings();
 		simulation.createDefaultMap();
-		simulation.run(20);
+		simulation.run(30);
 	}
 }

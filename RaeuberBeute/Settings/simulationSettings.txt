@@ -1,7 +1,7 @@
 print_console
 1
 print_console_map
-0
+1
 print_console_detailed_map
 0
 print_console_score_map
@@ -9,7 +9,7 @@ print_console_score_map
 print_console_entity_count
 1
 print_console_animation_create
-1
+0
 print_console_animation_pause_ms
 100
 print_file_positions
@@ -43,9 +43,9 @@ prey_reproduction_cost
 prey_quantity
 10
 prey_vision_range
-1
+2
 prey_movement_range
-1
+2
 plant_quantity
 20
 plants_respawn

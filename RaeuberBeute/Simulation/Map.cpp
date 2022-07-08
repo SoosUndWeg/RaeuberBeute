@@ -121,11 +121,14 @@ namespace sim {
 	void Map::spawn(Entity entity, int count) {
 		int x;
 		int y;
+		//Um zu verhindern, dass die Schleife unendlich laeuft, sobald die Map sehr voll oder komplett voll ist
+		int breakCondition = 0;
 		bool isEmpty;
 
 		if (count < this->xSize * this->ySize) {
 			for (int i = 0; i < count; i++) {
 				do {
+					breakCondition++;
 					x = sim::Random().ranIntInRange(this->xSize - 1);
 					y = sim::Random().ranIntInRange(this->ySize - 1);
 
@@ -133,7 +136,7 @@ namespace sim {
 					if (!isEmpty) {
 						map[x][y] = std::make_shared<Entity>(entity);
 					}
-				} while (isEmpty);
+				} while (isEmpty && (breakCondition < 20));
 			}
 		}
 		else {
