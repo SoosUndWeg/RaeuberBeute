@@ -28,6 +28,7 @@ namespace sim {
 
 		//sonstiges
 		void print();
+		void clearMapFromConsole();
 
 		//manipulate Entities
 		void setEntity(int, int);

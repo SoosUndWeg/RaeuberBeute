@@ -1,6 +1,7 @@
 #include "Map.h"
 
 #include "Tools/Random.h"
+#include "Tools/Tools.h"
 
 #include <iostream>
 
@@ -92,6 +93,12 @@ namespace sim {
 		mapBlueprint += "|\nV\nY";
 		std::cout << mapBlueprint << std::endl;
 	}
+	//Entsprechend viele Zeilen mit entsprechender länge aus der Konsole entfernen, wie die Map groß ist
+	void Map::clearMapFromConsole() {
+		sim::clearByLength(std::string(lineBlueprint + "+-> X\n").length(), ySize * 2 + 4);
+	}
+
+	//manipulate Entities
 	void Map::setEntity(int xPos, int yPos) {
 		map[xPos][yPos] = std::make_shared<Entity>(Entity());
 		updateEntity(xPos, yPos);

@@ -90,72 +90,8 @@ namespace sim {
 
 		//Alle Entities dem Tracker hinzufuegen
 		updateEntityTracker();
-		//printStep();
 		
-		//Sofern Ausgabe in Konsole aktiviert wurde, entsprechende Option ausfuehren
-		if (print_console && print_console_entity_count && !print_console_animation_create) {
-			std::cout << "\nPredator:" << getRoleCount(predator) << "\n";
-			std::cout << "Prey    :" << getRoleCount(prey) << "\n";
-			std::cout << "Plant   :" << getRoleCount(plant) << "\n\n";
-		}
-		if (print_console && (print_console_animation_create || print_console_detailed_map))
-			map->print();
-		//Sofern Ausgabe in Datei Aktiviert wurde, entsprechende Option ausfuehren
-		if (print_file) {
-			if (print_file_positions_detailed) {}
-			else if (print_file_positions_detailed_compressed) {}
-			else if (print_file_entity_count) {
-				fileStream << steps << " ";
-				fileStream << predator << " " << getRoleCount(predator) << " ";
-				fileStream << prey << " " << getRoleCount(prey) << " ";
-				fileStream << plant << " " << getRoleCount(plant) << " ";
-				fileStream << null << " " << getRoleCount(null) << " ";
-				if (!print_file_positions && !print_file_positions_compressed && !print_file_positions_detailed)
-					fileStream << "\n";
-			}
-			//Vollstaendige Map in Datei schreiben
-			if (print_file_positions_detailed) {
-				fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-			//Position aller Entitys, die nicht null sind, in Datei schreiben
-			else if (print_file_positions_detailed_compressed) {
-				fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						if (map->getEntity(x, y)->getRole() != null)
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-			else if (print_file_positions_compressed) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						if (map->getEntity(x, y)->getRole() != null)
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-			else if (print_file_positions) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
-				for (int y = 0; y < mapYSize; y++) {
-					for (int x = 0; x < mapXSize; x++) {
-						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
-					}
-				}
-				fileStream << "\n";
-			}
-		}
+		sim::clearConsole();
 	}
 	//Test Map zum haendischen erstellen verschiedener Szenarios zum debuggen
 	void Simulation::createTestMap() {
@@ -216,6 +152,7 @@ namespace sim {
 		steps++;
 	}
 	void Simulation::run(int steps) {
+		//sim::clearConsole();
 		for (int i = 0; i < steps; i++)
 			step();
 	}
@@ -395,7 +332,10 @@ namespace sim {
 					std::cout << "Predator [" << xPos << "][" << yPos << "]\n";
 				if (print_console_animation_create) {
 					std::this_thread::sleep_for(std::chrono::milliseconds(print_console_animation_pause_ms));
-					sim::clearConsole();
+					if (use_VT100_escape_sequence)
+						map->clearMapFromConsole();
+					else
+						sim::clearConsole();
 				}
 				map->print();
 			}
@@ -608,7 +548,10 @@ namespace sim {
 					std::cout << "Prey [" << xPos << "][" << yPos << "]\n";
 				if (print_console_animation_create) {
 					std::this_thread::sleep_for(std::chrono::milliseconds(print_console_animation_pause_ms));
-					sim::clearConsole();
+					if (use_VT100_escape_sequence)
+						map->clearMapFromConsole();
+					else
+						sim::clearConsole();
 				}
 				map->print();
 			}
@@ -894,7 +837,11 @@ namespace sim {
 			std::getline(fileStream, input);
 			std::istringstream(input) >> Simulation::plant_food_count;
 
-			//clearConsole();
+			//use_VT100_escape_sequence
+			std::getline(fileStream, input);
+			std::cout << input << "\n";
+			std::getline(fileStream, input);
+			std::istringstream(input) >> Simulation::use_VT100_escape_sequence;
 		}
 		else {
 			std::cout << "Datei \"simulationSettings.txt\" konnte nicht geoeffnet werden\n";
