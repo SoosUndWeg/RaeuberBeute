@@ -130,6 +130,8 @@ namespace sim {
 	void Map::updateEntity(const int& xPos, const int& yPos) {
 		map[xPos][yPos]->setPos(xPos, yPos);
 	}
+
+	//Entities auf der Map spawnen
 	void Map::spawn(const Entity& entity, const int& count) {
 		int x;
 		int y;
