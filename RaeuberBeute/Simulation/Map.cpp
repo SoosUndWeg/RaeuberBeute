@@ -7,23 +7,32 @@
 
 namespace sim {
 	//Konstruktor
-	Map::Map(int Size) : xSize{ Size }, ySize{ Size }{
+	Map::Map(const int& Size) : xSize{ Size }, ySize{ Size }{
 		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
 		for (int x = 0; x < xSize; x++) {
 			lineBlueprint += "+---";
 		}
 		lineBlueprint += "+\n";
 
+		//Blaupause für das leeren der Konsole erstellen, um Leistung zu sparen
+		sim::createClearBlueprint(std::string(lineBlueprint + "+-> X\n").length(), ySize * 2 + 4);
+
+		//Map initialisieren
 		map.resize(Size, std::vector<std::shared_ptr<Entity>>(Size, nullptr));
 		fill();
 		updateAll();
 	}
-	Map::Map(int xSize, int ySize) : xSize{ xSize }, ySize{ ySize }{
+	Map::Map(const int& xSize, const int& ySize) : xSize{ xSize }, ySize{ ySize }{
 		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
 		for (int x = 0; x < xSize; x++) {
 			lineBlueprint += "+---";
 		}
 		lineBlueprint += "+\n";
+
+		//Blaupause für das leeren der Konsole erstellen, um Leistung zu sparen
+		sim::createClearBlueprint(std::string(lineBlueprint + "+-> X\n").length(), ySize * 2 + 4);
+
+		//Map initialisieren
 		map.resize(xSize, std::vector<std::shared_ptr<Entity>>(ySize, nullptr));
 		fill();
 		updateAll();
@@ -33,31 +42,27 @@ namespace sim {
 	Map::~Map() {}
 
 	//get
-	std::shared_ptr<Entity> Map::getEntity(int xPos, int yPos) const { return this->map[xPos][yPos]; }
+	std::shared_ptr<Entity> Map::getEntity(const int& xPos, const int& yPos) const { return this->map[xPos][yPos]; }
 	int Map::getXSize() const { return this->xSize; }
 	int Map::getYSize() const { return this->ySize; }
 	//int Map::operator[] (int xPos) const { return 1; }
 
 	//set
-	void Map::setPos(int xPos, int yPos, int newXPos, int newYPos) {
-		//std::swap(map[xPos][yPos], map[newXPos][newYPos]);
-		//std::iter_swap(map[xPos][yPos], map[newXPos][newYPos]);
-		std::shared_ptr<Entity> tmp_shared_ptr = map[xPos][yPos];
-		map[xPos][yPos] = map[newXPos][newYPos];
-		map[newXPos][newYPos] = tmp_shared_ptr;
+	void Map::setPos(const int& xPos, const int& yPos, const int& newXPos, const int& newYPos) {
+		std::swap(map[xPos][yPos], map[newXPos][newYPos]);
 
 		updateEntity(newXPos, newYPos);
 		updateEntity(xPos, yPos);
 	}
 
-	void Map::setXPos(int xPos, int yPos, int newXPos) {
+	void Map::setXPos(const int& xPos, const int& yPos, const int& newXPos) {
 		std::swap(map[xPos][yPos], map[newXPos][yPos]);
 
 		updateEntity(newXPos, yPos);
 		updateEntity(xPos, yPos);
 	}
 	
-	void Map::setYPos(int xPos, int yPos, int newYPos) {
+	void Map::setYPos(const int& xPos, const int& yPos, const int& newYPos) {
 		std::swap(map[xPos][yPos], map[xPos][newYPos]);
 
 		updateEntity(xPos, newYPos);
@@ -95,15 +100,15 @@ namespace sim {
 	}
 	//Entsprechend viele Zeilen mit entsprechender länge aus der Konsole entfernen, wie die Map groß ist
 	void Map::clearMapFromConsole() {
-		sim::clearByLength(std::string(lineBlueprint + "+-> X\n").length(), ySize * 2 + 4);
+		sim::clearByBlueprint();
 	}
 
 	//manipulate Entities
-	void Map::setEntity(int xPos, int yPos) {
+	void Map::setEntity(const int& xPos, const int& yPos) {
 		map[xPos][yPos] = std::make_shared<Entity>(Entity());
 		updateEntity(xPos, yPos);
 	}
-	void Map::setEntity(Entity entity, int xPos, int yPos) {
+	void Map::setEntity(const Entity& entity, const int& xPos, const int& yPos) {
 		map[xPos][yPos] = std::make_shared<Entity>(entity);
 		updateEntity(xPos, yPos);
 	}
@@ -122,10 +127,10 @@ namespace sim {
 			}
 		}
 	}
-	void Map::updateEntity(int xPos, int yPos) {
+	void Map::updateEntity(const int& xPos, const int& yPos) {
 		map[xPos][yPos]->setPos(xPos, yPos);
 	}
-	void Map::spawn(Entity entity, int count) {
+	void Map::spawn(const Entity& entity, const int& count) {
 		int x;
 		int y;
 		//Um zu verhindern, dass die Schleife unendlich laeuft, sobald die Map sehr voll oder komplett voll ist

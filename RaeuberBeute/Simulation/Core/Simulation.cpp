@@ -28,7 +28,7 @@ namespace sim {
 		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
 		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
 	}
-	Simulation::Simulation(int mapSize) : mapXSize{ mapSize }, mapYSize{ mapSize } {
+	Simulation::Simulation(const int& mapSize) : mapXSize{ mapSize }, mapYSize{ mapSize } {
 		map = new Map(mapSize);
 		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
 		fileStream.open("simulation_data.txt");
@@ -40,7 +40,7 @@ namespace sim {
 		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
 		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
 	}
-	Simulation::Simulation(int mapXSize, int mapYSize) : mapXSize{ mapXSize }, mapYSize{ mapYSize } {
+	Simulation::Simulation(const int& mapXSize, const int& mapYSize) : mapXSize{ mapXSize }, mapYSize{ mapYSize } {
 		map = new Map(mapXSize, mapYSize);
 		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
 		fileStream.open("simulation_data.txt");
@@ -125,8 +125,6 @@ namespace sim {
 		map->setEntity(Grass, 4, 4);
 
 		updateEntityTracker();
-
-		printStep();
 	}
 
 	//Schritt in der Simulation machen
@@ -151,7 +149,7 @@ namespace sim {
 		//Schrittzaehler eins hochsetzen
 		steps++;
 	}
-	void Simulation::run(int steps) {
+	void Simulation::run(const int& steps) {
 		//sim::clearConsole();
 		for (int i = 0; i < steps; i++)
 			step();
@@ -159,7 +157,7 @@ namespace sim {
 
 	//Herzstueck der Simulation
 	//Entscheiden, was zu tun ist anhand der umliegenden Felder
-	void Simulation::moveEntity(int xPos, int yPos) {
+	void Simulation::moveEntity(const int& xPos, const int& yPos) {
 		Role role = map->getEntity(xPos, yPos)->getRole();
 		
 		//***************************Predator*********************
@@ -589,7 +587,7 @@ namespace sim {
 			}
 		}
 	}
-	void Simulation::addToEntityTracker(int xPos, int yPos) {
+	void Simulation::addToEntityTracker(const int& xPos, const int& yPos) {
 		entityTracker.emplace_back(std::weak_ptr<Entity>(map->getEntity(xPos, yPos)));
 	}
 	void Simulation::updateEntityTracker() {
@@ -603,7 +601,7 @@ namespace sim {
 	}
 
 	//Sonstiges
-	int Simulation::getRoleCount(Role role) const {
+	int Simulation::getRoleCount(const Role& role) const {
 		int counter = 0;
 		for (int i = 0; i < entityTracker.size(); i++) {
 			if (std::shared_ptr<Entity> tmp_ptr = entityTracker[i].lock())

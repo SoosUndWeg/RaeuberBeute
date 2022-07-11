@@ -14,7 +14,7 @@ namespace sim {
 	struct Entity {
 		//Konstruktor
 		Entity();
-		Entity(Role, std::string);
+		Entity(const Role&, const std::string&);
 		Entity(Entity&);
 		Entity(const Entity&);
 		virtual ~Entity();
@@ -28,20 +28,20 @@ namespace sim {
 		int getFoodCount() const;
 
 		//set
-		void setPos(int, int);
-		void setXPos(int);
-		void setYPos(int);
-		void setAge(int);
-		void setFoodCount(int);
+		void setPos(const int&, const int&);
+		void setXPos(const int&);
+		void setYPos(const int&);
+		void setAge(const int&);
+		void setFoodCount(const int&);
 
 		//sonstiges
-		void eat(int);
-		void eat(Entity);
+		void eat(const int&);
+		void eat(const Entity&);
 		void eat(Entity*);
 		void starve();
-		void starve(int);
+		void starve(const int&);
 		void getOlder();
-		void getOlder(int);
+		void getOlder(const int&);
 
 		//Virtual Functions
 		virtual std::shared_ptr<Vision> getVision() const { return vision; }
@@ -49,11 +49,11 @@ namespace sim {
 		virtual std::shared_ptr<Attack> getAttack() const { return attack; }
 
 		virtual void setVision(std::shared_ptr<Vision>) {}
-		virtual void setVision(Vision) {}
+		virtual void setVision(const Vision&) {}
 		virtual void setMovement(std::shared_ptr<Movement>) {}
-		virtual void setMovement(Movement) {}
+		virtual void setMovement(const Movement&) {}
 		virtual void setAttack(std::shared_ptr<Attack>) {}
-		virtual void setAttack(Attack) {}
+		virtual void setAttack(const Attack&) {}
 
 	protected:
 		const Role role;

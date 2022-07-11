@@ -3,12 +3,12 @@
 namespace sim {
 	Environment::Environment() :Property{ "Environment" } {}
 	Environment::Environment(const char* name) :Property{ name } {}
-	Environment::Environment(std::string name) :Property{ name } {}
+	Environment::Environment(const std::string& name) :Property{ name } {}
 
-	void Environment::blockMovement(bool blockingMovement) {
+	void Environment::blockMovement(const bool& blockingMovement) {
 		this->blockingMovement = blockingMovement;
 	}
-	void Environment::blockVision(bool blockingVision) {
+	void Environment::blockVision(const bool& blockingVision) {
 		this->blockingVision = blockingVision;
 	}
 

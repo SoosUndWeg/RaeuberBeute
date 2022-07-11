@@ -7,10 +7,10 @@ namespace sim {
 	public:
 		Environment();
 		Environment(const char*);
-		Environment(std::string);
+		Environment(const std::string&);
 
-		void blockMovement(bool);
-		void blockVision(bool);
+		void blockMovement(const bool&);
+		void blockVision(const bool&);
 
 		bool isBlockingMovement();
 		bool isBlockingVision();

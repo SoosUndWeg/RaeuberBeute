@@ -8,10 +8,10 @@ namespace sim {
 		using Property::Property;
 		Movement();
 		Movement(const char*);
-		Movement(std::string);
+		Movement(const std::string&);
 
-		void setRange(int);
-		void setBlockable(bool);
+		void setRange(const int&);
+		void setBlockable(const bool&);
 
 		int getRange();
 		bool isBlockable();

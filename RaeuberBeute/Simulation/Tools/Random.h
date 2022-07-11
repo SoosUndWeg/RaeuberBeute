@@ -3,13 +3,13 @@
 #include <random>
 
 namespace sim {
-	static bool usedSeed = false;
+	static inline bool usedSeed = false;
 
 	struct Random {
 		Random();
 
-		int ranIntInRange(int);
-		int ranIntInRange(int, int);
+		int ranIntInRange(const int&);
+		int ranIntInRange(const int&, const int&);
 	private:
 		
 	};

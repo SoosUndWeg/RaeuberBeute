@@ -7,10 +7,10 @@ namespace sim {
 	public:
 		Vision();
 		Vision(const char*);
-		Vision(std::string);
+		Vision(const std::string&);
 
-		void setRange(int);
-		void setBlockable(bool);
+		void setRange(const int&);
+		void setBlockable(const bool&);
 
 		int getRange();
 		bool isBlockable();

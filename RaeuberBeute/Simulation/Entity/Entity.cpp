@@ -3,7 +3,7 @@
 namespace sim {
 	//Konstruktor
 	Entity::Entity() :role{ null }, xPos{ -1 }, yPos{ -1 }, name{ "Entity" } {}
-	Entity::Entity(Role role, std::string name) : role{ role }, name{ name } {}
+	Entity::Entity(const Role& role, const std::string& name) : role{ role }, name{ name } {}
 	//Copy Constructor
 	Entity::Entity(Entity& entity) : role{ entity.getRole() }, name{ entity.name } {
 		this->vision = entity.vision;
@@ -34,28 +34,28 @@ namespace sim {
 	int Entity::getFoodCount() const { return this->foodCount; }
 	
 	//set
-	void Entity::setPos(int xPos, int yPos) {
+	void Entity::setPos(const int& xPos, const int& yPos) {
 		this->xPos = xPos;
 		this->yPos = yPos;
 	}
-	void Entity::setXPos(int xPos) {
+	void Entity::setXPos(const int& xPos) {
 		this->xPos = xPos; 
 	}
-	void Entity::setYPos(int yPos) {
+	void Entity::setYPos(const int& yPos) {
 		this->yPos = yPos; 
 	}
-	void Entity::setAge(int age) {
+	void Entity::setAge(const int& age) {
 		this->age = age;
 	}
-	void Entity::setFoodCount(int foodCount) {
+	void Entity::setFoodCount(const int& foodCount) {
 		this->foodCount = foodCount;
 	}
 
 	//sonstiges
-	void Entity::eat(int food) {
+	void Entity::eat(const int& food) {
 		foodCount += food;
 	}
-	void Entity::eat(Entity food) {
+	void Entity::eat(const Entity& food) {
 		foodCount += food.getFoodCount();
 	}
 	void Entity::eat(Entity* food) {
@@ -64,13 +64,13 @@ namespace sim {
 	void Entity::starve() {
 		foodCount -= 1;
 	}
-	void Entity::starve(int hunger) {
+	void Entity::starve(const int& hunger) {
 		foodCount -= hunger;
 	}
 	void Entity::getOlder() {
 		this->age += 1;
 	}
-	void Entity::getOlder(int age) {
+	void Entity::getOlder(const int& age) {
 		this->age += age;
 	}
 }

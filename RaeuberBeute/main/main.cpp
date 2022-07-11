@@ -3,9 +3,6 @@
 
 #include "../Simulation/Core/Controller.h"
 
-#include "../Simulation/Tools/Tools.h"
-#include <string>
-
 double f(double t, double x) {                                        // Definition der Funktion f(t,x) 
     int i = 1;
     const int N = 2;

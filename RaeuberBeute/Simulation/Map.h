@@ -9,34 +9,34 @@
 namespace sim {
 	struct Map {
 		//Konstruktor
-		Map(int);
-		Map(int, int);
+		Map(const int&);
+		Map(const int&, const int&);
 
 		//Destuktor
 		~Map();
 
 		//get
-		std::shared_ptr<Entity> getEntity(int, int) const;
+		std::shared_ptr<Entity> getEntity(const int&, const int&) const;
 		int getXSize() const;
 		int getYSize() const;
 		//int operator[] (int) const;
 
 		//set
-		void setPos(int, int, int, int);
-		void setXPos(int, int, int);
-		void setYPos(int, int, int);
+		void setPos(const int&, const int&, const int&, const int&);
+		void setXPos(const int&, const int&, const int&);
+		void setYPos(const int&, const int&, const int&);
 
 		//sonstiges
 		void print();
 		void clearMapFromConsole();
 
 		//manipulate Entities
-		void setEntity(int, int);
-		void setEntity(Entity, int, int);
+		void setEntity(const int&, const int&);
+		void setEntity(const Entity&, const int&, const int&);
 		void fill();
 		void updateAll();
-		void updateEntity(int, int);
-		void spawn(Entity, int);
+		void updateEntity(const int&, const int&);
+		void spawn(const Entity&, const int&);
 	private:
 		std::vector<std::vector<std::shared_ptr<Entity>>> map;
 

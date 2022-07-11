@@ -11,7 +11,7 @@ print_console_entity_count
 print_console_animation_create
 1
 print_console_animation_pause_ms
-400
+300
 print_file_positions
 0
 print_file_positions_compressed

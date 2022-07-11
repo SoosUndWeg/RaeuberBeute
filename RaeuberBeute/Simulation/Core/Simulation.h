@@ -9,18 +9,18 @@
 namespace sim {
 	struct Simulation {
 		Simulation();
-		Simulation(int);
-		Simulation(int, int);
+		Simulation(const int&);
+		Simulation(const int&, const int&);
 		~Simulation();
 		
 		void createDefaultMap();
 		void createTestMap();
 
 		void step();
-		void run(int);
-		void moveEntity(int, int);
+		void run(const int&);
+		void moveEntity(const int&, const int&);
 
-		int getRoleCount(Role) const;
+		int getRoleCount(const Role&) const;
 
 		void printStep();
 
@@ -65,7 +65,7 @@ namespace sim {
 	private:
 		//Private Funktionen
 		void clearEntityTracker();
-		void addToEntityTracker(int, int);
+		void addToEntityTracker(const int&, const int&);
 		void updateEntityTracker();
 
 		//Member-Variablen

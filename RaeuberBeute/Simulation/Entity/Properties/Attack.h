@@ -7,9 +7,9 @@ namespace sim {
 	public:
 		Attack();
 		Attack(const char*);
-		Attack(std::string);
+		Attack(const std::string&);
 
-		void setRange(int);
+		void setRange(const int&);
 
 		int getRange();
 	private:

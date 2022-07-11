@@ -9,11 +9,11 @@ namespace sim {
 		}
 	}
 
-	int Random::ranIntInRange(int max) {
+	int Random::ranIntInRange(const int& max) {
 		return max < 0 ? 0 : std::rand() % (max + 1);
 	}
 
-	int Random::ranIntInRange(int min, int max) {
+	int Random::ranIntInRange(const int& min, const int& max) {
 		return max - min < 0 ? 0 : std::rand() % (max + 1 - min) + min;
 	}
 }

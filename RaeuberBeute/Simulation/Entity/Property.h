@@ -8,7 +8,7 @@ namespace sim {
 	public:
 		Property();
 		Property(const char*);
-		Property(std::string);
+		Property(const std::string&);
 
 		std::string getName() const;
 	protected:

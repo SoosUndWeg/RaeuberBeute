@@ -3,12 +3,12 @@
 namespace sim {
 	Vision::Vision() : Property{ "Vision" } {}
 	Vision::Vision(const char* name) : Property{ name } {}
-	Vision::Vision(std::string name) : Property{ name } {}
+	Vision::Vision(const std::string& name) : Property{ name } {}
 
-	void Vision::setRange(int range) {
+	void Vision::setRange(const int& range) {
 		this->range = range;
 	}
-	void Vision::setBlockable(bool blockable) {
+	void Vision::setBlockable(const bool& blockable) {
 		this->blockable = blockable;
 	}
 

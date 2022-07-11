@@ -6,7 +6,7 @@ namespace sim {
 	struct Plant : public Entity {
 		Plant();
 		Plant(const char*);
-		Plant(std::string);
+		Plant(const std::string&);
 	private:
 
 	};
