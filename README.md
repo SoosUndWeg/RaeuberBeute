@@ -134,4 +134,14 @@ Aktiviert (true) oder deaktiviert (false) die Option, ob die anfängliche Anzahl
 ```c++
 static inline int plant_food_count = 4;
 ```
-Legt fest, welchen Nährwert eine Pflanze besitzt.
+Legt fest, welchen Nährwert eine Pflanze besitzt.  
+
+****************************
+**Allgemeine Einstellungen**
+
+```c++
+static inline bool use_VT100_escape_sequence = true;
+```
+Diese Einstellung legt fest, ob [VT100 escape sequence] beim leeren der Konsole für die Animation benutzt wird (true). Das hat den Vorteil, dass die Animation flüssig läuft und im Gegensatz zur zweiten Möglichkeit kein Flackern beim Leeren erzeugt. Da manche Konsolen das nicht unterstützen, kann diese Option deaktiviert werden (false), wodurch stattdessen zum Leeren Systembefehle benutzt werden: unter Windows "*cls*", unter Linux/macOS "*clear*".
+
+[VT100 escape sequence]: https://web.archive.org/web/20151004211730/http://www.termsys.demon.co.uk/vtansi.htm
