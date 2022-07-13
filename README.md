@@ -1,7 +1,8 @@
-Information zu Einstellungsmöglichkeiten der Simulation
--------------------------------------------------------
+Einstellungsmöglichkeiten der Simulation
+----------------------------------------
 
 Einstellungen können über Objekte des Structs sim::Simulation vorgenommen werden. Im folgenden werden die einzelnen Funktionen der Einstellungen erklärt. Die Standarteinstellungen stehen direkt beim Syntax dabei. Ein Entity kann vier verschiedene Rollen annehmen: *null*, *predator*, *prey*, und *plant*. Mit Zug ist hier gemeint, dass ein Entity (sofern es möglich ist) eine Entscheidung trifft, um sich z.B. zu bewegen oder auch nichts zu tun. Wenn von Schritt die Rede ist, ist der Zustand gemeint, sobald jedes Entity in der Map seinen Zug gemacht hat.
+
 ****************************
 **Ausgaben in die Konsole:**
 
@@ -142,6 +143,21 @@ Legt fest, welchen Nährwert eine Pflanze besitzt.
 ```c++
 static inline bool use_VT100_escape_sequence = true;
 ```
-Diese Einstellung legt fest, ob [VT100 escape sequence] beim leeren der Konsole für die Animation benutzt wird (true). Das hat den Vorteil, dass die Animation flüssig läuft und im Gegensatz zur zweiten Möglichkeit kein Flackern beim Leeren erzeugt. Da manche Konsolen das nicht unterstützen, kann diese Option deaktiviert werden (false), wodurch stattdessen zum Leeren Systembefehle benutzt werden: unter Windows "*cls*", unter Linux/macOS "*clear*".
+Diese Einstellung legt fest, ob [VT100 escape sequence] beim leeren der Konsole für die Animation benutzt wird (true). Das hat den Vorteil, dass die Animation flüssig läuft und im Gegensatz zur zweiten Möglichkeit kein Flackern beim Leeren erzeugt. Da manche Konsolen das nicht unterstützen, kann diese Option deaktiviert werden (false), wodurch stattdessen zum Leeren Systembefehle benutzt werden: unter Windows "*cls*", unter Linux/macOS "*clear*".  
+
+Einstellungsmöglichkeiten der Map
+---------------------------------
+
+Einstellungen der Map werden über den Konstruktor automatisch aus der Datei "*mapSettings.txt*" geladen.
+
+**************************
+**Spawning-Einstellungen**
+
+Entities werden über eine Member-Funktion gespawnt, indem zufällige Koordinaten in den Limits der Map generiert werden und im Anschluss geschaut wird, ob das Feld frei ist. Sollte das nicht der Fall sein, wird das wiederholt, bis ein freies Feld gefunden oder ein Limit erreicht wurde.
+
+```c++
+static inline uint16_t map_spawn_retry_max = 40;
+```
+Diese Einstellung legt das oben erwähnte Limit fest um zu verhindern, dass bei einer sehr vollen oder gänzlich vollen Map die Schleife unendlich läuft und das Programm hängen bleibt. Folglich bedeutet das, je höher der Wert und je voller die Map, desto mehr Zeit verbringt das Programm in der Schleife bzw. desto mehr Leistung geht hier verloren.
 
 [VT100 escape sequence]: https://web.archive.org/web/20151004211730/http://www.termsys.demon.co.uk/vtansi.htm
