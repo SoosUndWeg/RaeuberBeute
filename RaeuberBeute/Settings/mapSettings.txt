@@ -1,0 +1,2 @@
+map_spawn_retry_max
+40

@@ -16,41 +16,59 @@
 
 namespace sim {
 	//Konstruktor
-	Simulation::Simulation() : mapXSize{ 10 }, mapYSize{ 10 } {
+	Simulation::Simulation() : mapXSize{ 10 }, mapYSize{ 10 }, simulationNumber{ simulationCount } {
 		map = new Map(10);
 		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
-		fileStream.open("simulation_data.txt");
+		fileStream.open("simulation_data_" + std::to_string(simulationNumber) + ".txt");
 		if (!fileStream.is_open())
 			print_file = false;
 
 		//Standart Anzahl fuer Entitys setzten, abhaengig von der Mapgroesse (von der laengsten Seite)
-		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
-		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
-		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
+		if(predator_quantity == 0)
+			predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		if(prey_quantity == 0)
+			prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		if(plant_quantity == 0)
+			plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
+
+		//Anzahl der Simulationen hochsetzen
+		simulationCount++;
 	}
-	Simulation::Simulation(const int& mapSize) : mapXSize{ mapSize }, mapYSize{ mapSize } {
+	Simulation::Simulation(const int& mapSize) : mapXSize{ mapSize }, mapYSize{ mapSize }, simulationNumber{ simulationCount } {
 		map = new Map(mapSize);
 		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
-		fileStream.open("simulation_data.txt");
+		fileStream.open("simulation_data_" + std::to_string(simulationNumber) + ".txt");
 		if (!fileStream.is_open())
 			print_file = false;
 
 		//Standart Anzahl fuer Entitys setzten, abhaengig von der Mapgroesse (von der laengsten Seite)
-		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
-		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
-		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
+		if (predator_quantity == 0)
+			predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		if (prey_quantity == 0)
+			prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		if (plant_quantity == 0)
+			plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
+
+		//Anzahl der Simulationen hochsetzen
+		simulationCount++;
 	}
-	Simulation::Simulation(const int& mapXSize, const int& mapYSize) : mapXSize{ mapXSize }, mapYSize{ mapYSize } {
+	Simulation::Simulation(const int& mapXSize, const int& mapYSize) : mapXSize{ mapXSize }, mapYSize{ mapYSize }, simulationNumber{ simulationCount } {
 		map = new Map(mapXSize, mapYSize);
 		//Datei fuer Ausgabe oeffnen und sicherstellen, dass sie erfolgreich geoeffnet wurde
-		fileStream.open("simulation_data.txt");
+		fileStream.open("simulation_data_" + std::to_string(simulationNumber) + ".txt");
 		if (!fileStream.is_open())
 			print_file = false;
 
 		//Standart Anzahl fuer Entitys setzten, abhängig von der Mapgroesse (von der Laengsten Seite)
-		predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
-		prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
-		plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
+		if (predator_quantity == 0)
+			predator_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		if (prey_quantity == 0)
+			prey_quantity = mapXSize < mapYSize ? mapYSize : mapXSize;
+		if (plant_quantity == 0)
+			plant_quantity = mapXSize < mapYSize ? mapYSize * 2 : mapXSize * 2;
+
+		//Anzahl der Simulationen hochsetzen
+		simulationCount++;
 	}
 
 	//Destruktor
@@ -340,21 +358,19 @@ namespace sim {
 			if (print_file) {
 				//Vollstaendige Map in Datei schreiben
 				if (print_file_positions_detailed) {
-					fileStream << steps << " ";
 					for (int y = 0; y < mapYSize; y++) {
 						for (int x = 0; x < mapXSize; x++) {
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+							fileStream << steps << " " << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 						}
+						fileStream << "\n";
 					}
-					fileStream << "\n";
 				}
 				//Position aller Entitys, die nicht null sind, in datei schreiben
 				else if (print_file_positions_detailed_compressed) {
-					fileStream << steps << " ";
 					for (int y = 0; y < mapYSize; y++) {
 						for (int x = 0; x < mapXSize; x++) {
 							if (map->getEntity(x, y)->getRole() != null)
-								fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+								fileStream << steps << " " << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 						}
 					}
 					fileStream << "\n";
@@ -556,21 +572,19 @@ namespace sim {
 			if (print_file) {
 				//Vollstaendige Map in Datei schreiben
 				if (print_file_positions_detailed) {
-					fileStream << steps << " ";
 					for (int y = 0; y < mapYSize; y++) {
 						for (int x = 0; x < mapXSize; x++) {
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+							fileStream << steps << " " << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 						}
+						fileStream << "\n";
 					}
-					fileStream << "\n";
 				}
 				//Position aller Entitys, die nicht null sind, in datei schreiben
 				else if (print_file_positions_detailed_compressed) {
-					fileStream << steps << " ";
 					for (int y = 0; y < mapYSize; y++) {
 						for (int x = 0; x < mapXSize; x++) {
 							if (map->getEntity(x, y)->getRole() != null)
-								fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+								fileStream << steps << " " << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 						}
 					}
 					fileStream << "\n";
@@ -637,25 +651,21 @@ namespace sim {
 			if (print_file_positions_detailed) {}
 			else if (print_file_positions_detailed_compressed) {}
 			else if (print_file_positions_compressed) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
 				for (int y = 0; y < mapYSize; y++) {
 					for (int x = 0; x < mapXSize; x++) {
 						if (map->getEntity(x, y)->getRole() != null)
-							fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+							fileStream << steps << " " << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 					}
 				}
 				fileStream << "\n";
 			}
 			else if (print_file_positions) {
-				if (!print_file_entity_count)
-					fileStream << steps << " ";
 				for (int y = 0; y < mapYSize; y++) {
 					for (int x = 0; x < mapXSize; x++) {
-						fileStream << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
+						fileStream << steps << " " << map->getEntity(x, y)->getRole() << " " << x << " " << y << " ";
 					}
+					fileStream << "\n";
 				}
-				fileStream << "\n";
 			}
 		}
 	}
@@ -666,180 +676,185 @@ namespace sim {
 	}
 	//Einstellungen laden
 	void Simulation::loadSimulationSettings(const char* fileName) {
-		std::ifstream fileStream(fileName);
+		std::ifstream inputFileStream(fileName);
 		std::string input;
 
-		if (fileStream.is_open()) {
+		if (inputFileStream.is_open()) {
 			std::cout << "Lade Einstellungen...\n\n";
 
 			//print_console
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_console;
 
 			//print_console_map
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_console_map;
 
 			//print_console_detailed_map
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_console_detailed_map;
 
 			//print_console_score_map
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_console_score_map;
 
 			//print_console_entity_count
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_console_entity_count;
 
 			//print_console_animation_create
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_console_animation_create;
 
 			//print_console_animation_pause_ms
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_console_animation_pause_ms;
 
 			//print_file_positions
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_file_positions;
 
 			//print_file_positions_compressed
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_file_positions_compressed;
 
 			//print_file_positions_detailed_compressed
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_file_positions_detailed_compressed;
 
 			//print_file_positions_detailed
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_file_positions_detailed;
 
 			//print_file_entity_count
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::print_file_entity_count;
 
 			//predator_max_age
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::predator_max_age;
 
 			//predator_reproduction_threshold
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::predator_reproduction_threshold;
 
 			//predator_reproduction_cost
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::predator_reproduction_cost;
 
 			//predator_quantity
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
-			std::istringstream(input) >> Simulation::predator_quantity;
+			std::getline(inputFileStream, input);
+			if(input != "0")
+				std::istringstream(input) >> Simulation::predator_quantity;
 
 			//predator_vision_range
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::predator_vision_range;
 
 			//predator_movement_range
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::predator_movement_range;
 
 			//prey_max_age
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::prey_max_age;
 
 			//prey_reproduction_threshold
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::prey_reproduction_threshold;
 
 			//prey_reproduction_cost
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::prey_reproduction_cost;
 
 			//prey_quantity
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
-			std::istringstream(input) >> Simulation::prey_quantity;
+			std::getline(inputFileStream, input);
+			if(input != "0")
+				std::istringstream(input) >> Simulation::prey_quantity;
 
 			//prey_vision_range
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::prey_vision_range;
 			std::cout << "Hier ist die prey_vision_range" << Simulation::prey_vision_range << "\n";
 
 			//prey_movement_range
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::prey_movement_range;
 
 			//plant_quantity
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
-			std::istringstream(input) >> Simulation::plant_quantity;
+			std::getline(inputFileStream, input);
+			if(input != "0")
+				std::istringstream(input) >> Simulation::plant_quantity;
 
 			//plants_respawn
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::plants_respawn;
 
 			//plant_food_count
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::plant_food_count;
 
 			//use_VT100_escape_sequence
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::cout << input << "\n";
-			std::getline(fileStream, input);
+			std::getline(inputFileStream, input);
 			std::istringstream(input) >> Simulation::use_VT100_escape_sequence;
+
+			inputFileStream.close();
 		}
 		else {
 			std::cout << "Datei \"simulationSettings.txt\" konnte nicht geoeffnet werden\n";

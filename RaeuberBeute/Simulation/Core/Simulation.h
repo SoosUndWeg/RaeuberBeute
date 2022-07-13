@@ -8,11 +8,14 @@
 
 namespace sim {
 	struct Simulation {
+		//Konstructor
 		Simulation();
 		Simulation(const int&);
 		Simulation(const int&, const int&);
+		//Destructor
 		~Simulation();
 		
+		//Funktionen
 		void createDefaultMap();
 		void createTestMap();
 
@@ -70,16 +73,21 @@ namespace sim {
 
 		//Member-Variablen
 		Map* map;
-
+		
 		std::ofstream fileStream;
 
 		std::vector<std::weak_ptr<Entity>> entityTracker;
 
-		static inline bool print_file = true;
+		bool print_file = true;
 
 		int steps = 0;
 
 		const int mapXSize;
 		const int mapYSize;
+
+		const uint16_t simulationNumber;
+
+		//Statische Variable mitzählen der Simulationen
+		static inline uint16_t simulationCount = 0;
 	};
 }

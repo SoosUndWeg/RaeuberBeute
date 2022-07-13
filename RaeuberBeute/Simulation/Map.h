@@ -19,7 +19,6 @@ namespace sim {
 		std::shared_ptr<Entity> getEntity(const int&, const int&) const;
 		int getXSize() const;
 		int getYSize() const;
-		//int operator[] (int) const;
 
 		//set
 		void setPos(const int&, const int&, const int&, const int&);
@@ -37,6 +36,13 @@ namespace sim {
 		void updateAll();
 		void updateEntity(const int&, const int&);
 		void spawn(const Entity&, const int&);
+
+		//Einstellung laden
+		void loadMapSettings();
+		void loadMapSettings(const char*);
+
+		//Einstellungen
+		static inline uint16_t map_spawn_retry_max = 40;
 	private:
 		std::vector<std::vector<std::shared_ptr<Entity>>> map;
 

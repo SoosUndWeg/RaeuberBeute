@@ -29,7 +29,7 @@ predator_reproduction_threshold
 predator_reproduction_cost
 4
 predator_quantity
-10
+0
 predator_vision_range
 1
 predator_movement_range
@@ -41,13 +41,13 @@ prey_reproduction_threshold
 prey_reproduction_cost
 4
 prey_quantity
-10
+0
 prey_vision_range
 2
 prey_movement_range
 2
 plant_quantity
-20
+0
 plants_respawn
 1
 plant_food_count

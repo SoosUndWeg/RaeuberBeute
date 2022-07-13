@@ -4,10 +4,15 @@
 #include "Tools/Tools.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 namespace sim {
 	//Konstruktor
 	Map::Map(const int& Size) : xSize{ Size }, ySize{ Size }{
+		//Map Einstellungen laden
+		loadMapSettings();
+
 		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
 		for (int x = 0; x < xSize; x++) {
 			lineBlueprint += "+---";
@@ -23,6 +28,9 @@ namespace sim {
 		updateAll();
 	}
 	Map::Map(const int& xSize, const int& ySize) : xSize{ xSize }, ySize{ ySize }{
+		//Map Einstellungen laden
+		loadMapSettings();
+
 		//Blaupause für die Ausgabe erstellen, um Leistung zu sparen
 		for (int x = 0; x < xSize; x++) {
 			lineBlueprint += "+---";
@@ -150,12 +158,37 @@ namespace sim {
 					if (!isEmpty) {
 						map[x][y] = std::make_shared<Entity>(entity);
 					}
-				} while (isEmpty && (breakCondition < 20));
+				} while (isEmpty && (breakCondition < map_spawn_retry_max));
 			}
 		}
 		else {
 			std::cerr << "Mehr Elemente versucht zu spawnen, als Platz ist\n";
 		}
 		updateAll();
+	}
+
+	//Einstellungen laden
+	void Map::loadMapSettings() {
+		loadMapSettings("./Settings/mapSettings.txt");
+	}
+	//Einstellungen laden
+	void Map::loadMapSettings(const char* fileName) {
+		std::ifstream inputFileStream(fileName);
+		std::string input;
+
+		if (inputFileStream.is_open()) {
+			std::cout << "Lade Einstellungen...\n\n";
+
+			//map_spawn_retry_max
+			std::getline(inputFileStream, input);
+			std::cout << input << "\n";
+			std::getline(inputFileStream, input);
+			std::istringstream(input) >> Map::map_spawn_retry_max;
+
+			inputFileStream.close();
+		}
+		else {
+			std::cout << "Datei \"simulationSettings.txt\" konnte nicht geoeffnet werden\n";
+		}
 	}
 }
